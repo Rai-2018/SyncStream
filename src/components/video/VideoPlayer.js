@@ -12,8 +12,16 @@ class VideoPlayer extends React.Component {
     }
 
     componentDidMount() {
-        this.player = videojs(this.videoNode, this.props, function onPlayerReady() {
-          console.log('onPlayerReady', this)
+        this.player = videojs(this.videoNode, this.props, function () {
+          this.on('pause', function(event) {
+                console.log('paused')
+            });
+          this.on('play', function(event) {
+                console.log('play')
+            });
+          this.on('seeked', function(event) {
+                console.log(this.currentTime())
+            });
         });
     }
 
@@ -28,7 +36,11 @@ class VideoPlayer extends React.Component {
     return (
       <div> 
         <div data-vjs-player>
-          <video class="video-js vjs-theme-forest" ref={ node => this.videoNode = node } ></video>
+          <video 
+              class="video-js vjs-theme-forest" 
+              ref={ node => this.videoNode = node }
+          />
+
         </div>
       </div>
     )
@@ -36,3 +48,4 @@ class VideoPlayer extends React.Component {
 }
 
 export default VideoPlayer;
+

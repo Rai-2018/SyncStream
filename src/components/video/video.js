@@ -3,16 +3,19 @@ import VideoPlayer from './VideoPlayer';
 
 class Player extends React.Component {
     render(){
-        const videoJsOptions = {
+        var videoJsOptions = {
           autoplay: true,
           controls: true,
           sources: [{
             src: 'http://localhost:4000/video/a.mp4',
             type: 'video/mp4',
-            fluid: true
+            fluid: true,
+            fill: true
           }]
         }
-        return (<VideoPlayer { ...videoJsOptions } />)
+        return (
+            <VideoPlayer { ...videoJsOptions } />
+        )
     }
 
 }
