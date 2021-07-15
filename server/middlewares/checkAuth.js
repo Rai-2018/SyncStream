@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/authKey.js");
-const db = require("../models");
-const User = db.user;
-const Role = db.role;
-const ROLES = db.ROLES;
+const User = require("../models/user");
+const Role = require("../models/role");
 
 checkToken = (req, res, next) => {
     const token = req.headers['x-access-token'];
@@ -69,7 +67,6 @@ checkMod = (req, res, next) => {
         );
     });
 };
-
 
 const checkAuth = {
     checkToken,

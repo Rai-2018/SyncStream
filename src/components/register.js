@@ -80,13 +80,14 @@ export default class Register extends Component {
     }
     handleRegister(e) {
         e.preventDefault();
+        console.log("registering");
         this.setState({
             message: "",
             successful: false
         });
         this.form.validateAll();
         if(this.checkBtn.context._errors.length === 0) {
-            
+
             AuthService.register(
                 this.state.username,
                 this.state.email,
