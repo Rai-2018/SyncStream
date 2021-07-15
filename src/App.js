@@ -58,11 +58,9 @@ class App extends React.Component {
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     
-
     const { classes } = this.props;
     return (
       <div>
-        {/* <nav class="navbar navbar-expand-lg navbar-light bg-light"> */}
         <AppBar position="static">
           <Typography variant="h2" className={classes.title}>
             <Link to={"/"}>Sync Stream</Link>
@@ -111,7 +109,7 @@ class App extends React.Component {
               </li>
             </div>
           )}
-        {/* </nav> */}
+
         </AppBar>
         <div class="container mt-3">
           <Switch>
