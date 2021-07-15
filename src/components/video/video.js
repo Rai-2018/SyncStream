@@ -4,7 +4,7 @@ import VideoPlayer from './VideoPlayer';
 class Player extends React.Component {
     render(){
         var videoJsOptions = {
-          controls: true,
+          controls: false,
           loadingSpinner: true,
           bigPlayButton: true,
           sources: [{

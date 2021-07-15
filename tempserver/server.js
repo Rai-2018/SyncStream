@@ -17,32 +17,33 @@ var master = {}
 io.on('connection', function(socket) {
   const requrl = socket.handshake.url
   const room_id = url.parse(requrl, true).query.roomid;
-  const user_id = url.parse(requrl, true).query.userid;
   socket.join(room_id);
-  console.log("room_id: " + room_id + " | user_id: " + user_id);
-
-  if(master[room_id] == null){
-    console.log("It is empty");
-    master[room_id] = user_id;
-  } else {
-    console.log("Not empty")
-    socket.broadcast.to(room_id).emit('message',"new");
-  }
+  console.log("Opening new connection: room_id: " + room_id);
 
   socket.on('message', function(message) {
     const obj = JSON.parse(message)
-    console.log("status: " + obj.status)
-    var data = obj.status
-    if(!isNaN(data) && !isNaN(parseFloat(data))){
+    var action = obj.action
+    console.log("Sending action: " + action)
+
+    if(action === "connect"){
+      if(master[room_id] == null){
+        console.log("Room: " + room_id + " | master: " + obj.user_id);
+        master[room_id] = socket;
+      } 
+
+    } else if(action === "skip"){
       var date = Date.now();
-      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.05){
+      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.03){
         lasttime = date
-        socket.broadcast.to(room_id).emit('message',obj.status);
+        socket.broadcast.to(room_id).emit('message',obj.time);
       }
-    } else if (data === "request"){
-      socket.broadcast.to(room_id).emit('message',"new");
+
+    } else if (action === "request"){
+      var socketid = master[room_id].id
+      socket.broadcast.to(socketid).emit('message',"new");
+
     } else {
-      socket.broadcast.to(room_id).emit('message',obj.status);
+      socket.broadcast.to(room_id).emit('message',obj.action);
     }
   });
 });
