@@ -8,20 +8,26 @@ const app = express();
 const server = httpserver.createServer(app)
 const io = socketIO(server);
 
-// const WebSocket = require('ws').Server;
-// const wss = new WebSocket({ server: server });
-
 
 app.use("/video", express.static(__dirname))
 
 var lasttime = 0;
+var master = {}
 
 io.on('connection', function(socket) {
   const requrl = socket.handshake.url
-  const room_id = url.parse(requrl, true).query.id;
-
+  const room_id = url.parse(requrl, true).query.roomid;
+  const user_id = url.parse(requrl, true).query.userid;
   socket.join(room_id);
-  console.log("user_id: " + room_id);
+  console.log("room_id: " + room_id + " | user_id: " + user_id);
+
+  if(master[room_id] == null){
+    console.log("It is empty");
+    master[room_id] = user_id;
+  } else {
+    console.log("Not empty")
+    socket.broadcast.to(room_id).emit('message',"new");
+  }
 
   socket.on('message', function(message) {
     const obj = JSON.parse(message)
@@ -29,13 +35,14 @@ io.on('connection', function(socket) {
     var data = obj.status
     if(!isNaN(data) && !isNaN(parseFloat(data))){
       var date = Date.now();
-      console.log(date)
-      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.5){
+      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.05){
         lasttime = date
         socket.broadcast.to(room_id).emit('message',obj.status);
       }
+    } else if (data === "request"){
+      socket.broadcast.to(room_id).emit('message',"new");
     } else {
-        socket.broadcast.to(room_id).emit('message',obj.status);
+      socket.broadcast.to(room_id).emit('message',obj.status);
     }
   });
 });
