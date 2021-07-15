@@ -23,7 +23,7 @@ io.on('connection', function(socket) {
   socket.on('message', function(message) {
     const obj = JSON.parse(message)
     var action = obj.action
-    console.log("Sending action: " + action)
+    console.log("Sending action: " + action);
 
     if(action === "connect"){
       if(master[room_id] == null){

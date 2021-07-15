@@ -15,7 +15,8 @@ class VideoPlayer extends React.Component {
         this.synctime = this.synctime.bind(this)
         this.state = {
           user_id: (parseInt(Math.random() * 100))% 10, 
-          room_id: 0
+          room_id: 0,
+          start: false
         }
         console.log( "room_id: " + this.state['room_id'])
         console.log( "user_id: " + this.state['user_id'])
@@ -116,12 +117,17 @@ class VideoPlayer extends React.Component {
     }
 
     synctime(){
-      console.log("start")
-      this.socket.send(JSON.stringify(
-        {
-          "action":"request",
-        }));
-      this.player.controls(true)
+      if (this.state['start'] === false){
+          console.log("First Start")
+          this.player.controls(true)
+          this.setState({"start":true})
+      } else {
+        this.socket.send(JSON.stringify(
+          {
+            "action":"request",
+          })
+        );
+      }
     }
 
     render() {
