@@ -8,8 +8,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/core/Menu';
-
-
 import AuthService from './services/auth-service';
 import Login from './components/login';
 import Register from './components/register';
@@ -78,17 +76,17 @@ class App extends React.Component {
             </li>
             {showModeratorBoard && (
               <li class="nav-item">
-                <link to={"/mod"} class="nav-link">Moderator Board</link>
+                <Link to={"/mod"} class="nav-link">Moderator Board</Link>
               </li>
             )}
             {showAdminBoard && (
               <li class="nav-item">
-                <link to={"/admin"} class="nav-link">Admin Board</link>
+                <Link to={"/admin"} class="nav-link">Admin Board</Link>
               </li>
             )}
             {currentUser && (
               <li class="nav-item">
-                <link to={"/user"} class="nav-link">User</link>
+                <Link to={"/user"} class="nav-link">User</Link>
               </li>
             )}
           </div>

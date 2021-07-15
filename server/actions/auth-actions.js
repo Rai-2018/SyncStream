@@ -10,7 +10,7 @@ exports.register = (req, res) => {
     console.log(req.body.username);
     console.log(req.body.email);
     console.log(req.body);
-    var user = new User({
+    const user = new User({
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10)
@@ -71,7 +71,7 @@ exports.signin = (req, res) => {
         username: req.body.username
     })
       .populate("roles", "-__v")
-      .execute((err, user) => {
+      .exec((err, user) => {
 
         if(err) {
             console.log("signing error at beginning ");
