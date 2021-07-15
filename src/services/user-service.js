@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-const url = 'http://localhost:8080/api/test';
+const url = 'http://localhost:4000/api/test';
 
 class UserService {
     getPublicContent() {

@@ -5,20 +5,25 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-// app.listen("4000", function() {
-//     console.log("listening");
+// mongoose.connect(
+//     'mongodb://127.0.0.1/SyncStream', 
+//     { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true }
+// ).then( () => {
+//     console.log("connected to MongoDB");
+// }).catch(err => {
+//     console.log("Connection error", err);
+//     process.exit();
 // });
-// app.get('/', (req, res) => res.send('Hello World!'))
 
-mongoose.connect(
-    'mongodb://127.0.0.1/SyncStream', 
-    { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true }
-).then( () => {
-    console.log("connected to MongoDB");
-}).catch(err => {
-    console.log("Connection error", err);
-    process.exit();
+// var mongoose = require('mongoose');
+
+var mongoURI = "mongodb://localhost:27017/SyncStream";
+var MongoDB = mongoose.connect(mongoURI).connection;
+MongoDB.on('error', function(err) { console.log(err.message); });
+MongoDB.once('open', function() {
+  console.log("mongodb connection open");
 });
+
 mongoose.Promise=global.Promise;
 
 app.use(morgan('dev'));
