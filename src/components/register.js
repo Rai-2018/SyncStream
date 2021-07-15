@@ -86,6 +86,7 @@ export default class Register extends Component {
         });
         this.form.validateAll();
         if(this.checkBtn.context._errors.length === 0) {
+            
             AuthService.register(
                 this.state.username,
                 this.state.email,

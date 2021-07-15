@@ -15,27 +15,7 @@ const required = value => {
     }
 };
 
-const vusername = value => {
-    if(value.length < 3 || value.length > 20) {
-        return (
-            <div className="alert alert-danger" role='alert'>
-                Username must be between 3-20 characters.
-            </div>
-        );
-    }
-};
-
-const vpassword = value => {
-    if(value.length < 6 || value.length > 40) {
-        return (
-            <div className="alert alert-danger" role='alert'>
-                Password must be between 6 and 40 characters.
-            </div>
-        );
-    }
-};
-
-export default class Login extends Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.handleLogin = this.handleLogin.bind(this);

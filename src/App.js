@@ -20,26 +20,6 @@ import BoardModerator from './components/board-moderator';
 import BoardAdmin from './components/board-admin';
 import { makeStyles, Typography } from '@material-ui/core';
 
-// function App() {
-//   return (
-//     <div class="App">
-//       <header class="App-header">
-//         <img src={logo} class="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           class="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
 const useStyles = makeStyles(theme => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -50,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
