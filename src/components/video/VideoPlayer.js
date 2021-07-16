@@ -1,11 +1,9 @@
-import React , { useEffect, useState } from 'react';
-import axios from 'axios';
+import React  from 'react';
 import videojs from 'video.js';
 import { io } from "socket.io-client";
 
 import 'video.js/dist/video-js.css'
 import '@videojs/themes/dist/forest/index.css';
-import { Redirect } from 'react-router-dom';
 
 
 class VideoPlayer extends React.Component {
@@ -134,7 +132,7 @@ class VideoPlayer extends React.Component {
     return (
       <div> 
         <div data-vjs-player>
-          <video class="video-js vjs-theme-forest" 
+          <video className="video-js vjs-theme-forest" 
                  ref={ node => this.videoNode = node }/>
         </div>
         <button type="button" onClick={this.synctime}>Start</button>
