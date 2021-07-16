@@ -17,15 +17,25 @@ import BoardUser from './components/board-user';
 import BoardModerator from './components/board-moderator';
 import BoardAdmin from './components/board-admin';
 import { makeStyles, Typography } from '@material-ui/core';
+import green from '@material-ui/core/colors/green';
 import {Player as VideoPlayer} from './components/video/video';
+
+
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1,
-  }
+    flexGrow: 1
+  },
+  customColor: {
+    backgroundColor: green[500]
+  },
+  customHeight: {
+    minHeight: 200
+  },
+  offset: theme.mixins.toolbar
 }));
 
 
@@ -61,54 +71,63 @@ class App extends React.Component {
     
     const { classes } = this.props;
     return (
-      <div>
+      <React.Fragment>
         <AppBar position="static">
-          <Typography variant="h2" className={classes.title}>
-            <Link to={"/"}>Sync Stream</Link>
+          <Typography component="h1" variant="h1" className={classes.title} align="center">
+            Sync Stream
           </Typography>
           
-          <div class="navbar-nav">
-            <li class="nav-item">
-              <Link to={"/home"} class="nav-link">
-                Home
-              </Link>
-            </li>
+          <IconButton color="inherit">
+            <Link to={"/home"} >
+              Home
+            </Link>
+          </IconButton>
+
+            
             {showModeratorBoard && (
-              <li class="nav-item">
-                <Link to={"/mod"} class="nav-link">Moderator Board</Link>
-              </li>
+              <IconButton color="inherit">
+                  <Link to={"/mod"} class="nav-link">Moderator Board</Link>
+              </IconButton>
+              
             )}
             {showAdminBoard && (
-              <li class="nav-item">
+
+            <IconButton color="inherit">
                 <Link to={"/admin"} class="nav-link">Admin Board</Link>
-              </li>
+            </IconButton>
+              
             )}
             {currentUser && (
-              <li class="nav-item">
+              <IconButton color="inherit" align="center">
                 <Link to={"/user"} class="nav-link">User</Link>
-              </li>
+              </IconButton>
             )}
-          </div>
 
           {currentUser ? (
-            <div class="navbar-nav">
-              <li class="nav-item">
+            
+            <React.Fragment>
+              <IconButton color="inherit">
                 <Link to={"/profile"} class="nav-link">{ currentUser.username }</Link>
-              </li>
-              <li class="nav-item">
+              </IconButton>
+              
+              <IconButton color="inherit">
                 <a href="/login" class="nav-link" onClick={this.logOut}>Log Out</a>
-              </li>
-            </div>
+              </IconButton>
+              
+            </React.Fragment>
           ) : (
-            <div class="navbar-nav">
-              <li class="nav-item">
+            <React.Fragment>
+              <IconButton color="inherit">
                 <Link to={"/login"} class="nav-link">Login</Link>
-              </li>
-              <li class="nav-item">
+              </IconButton>
+
+              <IconButton color="inherit">
                 <Link to={"/register"} class="nav-link">Sign Up</Link>
-              </li>
-            </div>
+              </IconButton>
+              
+            </React.Fragment>
           )}
+
         </AppBar>
         <div class="container mt-3">
           <Switch>
@@ -124,7 +143,7 @@ class App extends React.Component {
           </Switch>
         </div>
         
-      </div>
+      </React.Fragment>
     );
   }
 }
