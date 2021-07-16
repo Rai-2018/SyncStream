@@ -17,6 +17,7 @@ import BoardUser from './components/board-user';
 import BoardModerator from './components/board-moderator';
 import BoardAdmin from './components/board-admin';
 import { makeStyles, Typography } from '@material-ui/core';
+import {Player as VideoPlayer} from './components/video/video';
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
@@ -103,13 +104,11 @@ class App extends React.Component {
               <li class="nav-item">
                 <Link to={"/login"} class="nav-link">Login</Link>
               </li>
-
               <li class="nav-item">
                 <Link to={"/register"} class="nav-link">Sign Up</Link>
               </li>
             </div>
           )}
-
         </AppBar>
         <div class="container mt-3">
           <Switch>
@@ -120,6 +119,8 @@ class App extends React.Component {
             <Route exact path={"/user"} component={BoardUser} />
             <Route exact path={"/mod"} component={BoardModerator} />
             <Route exact path={"/admin"} component={BoardAdmin} />
+            <Route exact path='/video' component={VideoPlayer}/>
+
           </Switch>
         </div>
         
