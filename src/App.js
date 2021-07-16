@@ -137,6 +137,7 @@ class App extends React.Component {
             <Route exact path={"/mod"} component={BoardModerator} />
             <Route exact path={"/admin"} component={BoardAdmin} />
             <Route exact path='/video' component={VideoPlayer}/>
+            <Route exact path='/upload' component={Upload}/>
 
           </Switch>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import './upload.css';
 //import { Progress } from 'reactstrap';
 //import { ToastContainer, toast } from 'react-toastify';
