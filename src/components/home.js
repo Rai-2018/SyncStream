@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import UserService from "../services/user-service";
 
-export default class Home extends Component {
+export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = { content: "" };
@@ -23,6 +23,7 @@ export default class Home extends Component {
             <div className="container">
                 <header className="jumbotron">
                     <h3>{this.state.content}</h3>
+                    <p>hello</p>
                 </header>
             </div>
         );
