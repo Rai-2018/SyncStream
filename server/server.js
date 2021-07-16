@@ -41,6 +41,7 @@ app.get("/", (req, res) => {
 
 require("./routes/signInR")(app);
 require("./routes/roleroutes")(app);
+// require("./routes/uploadvideo")(app);
 
 
 function initial() {

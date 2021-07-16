@@ -16,6 +16,7 @@ import BoardAdmin from './components/board-admin';
 import { makeStyles, Typography } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
 import {Player as VideoPlayer} from './components/video/video';
+import Upload from './components/upload/upload';
 
 
 
@@ -136,6 +137,7 @@ class App extends React.Component {
             <Route exact path={"/mod"} component={BoardModerator} />
             <Route exact path={"/admin"} component={BoardAdmin} />
             <Route exact path='/video' component={VideoPlayer}/>
+            <Route exact path='/upload' component={Upload}/>
 
           </Switch>
         </div>
