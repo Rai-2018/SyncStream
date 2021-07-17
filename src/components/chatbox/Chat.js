@@ -51,7 +51,7 @@ function Chat({ comments }) {
             comment: input,
             user_name: "User 1",
             timestamp: "July 11 2021",
-            received: true,
+            received: false,
         });
 
         setInput("");

@@ -4,12 +4,15 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
+const Pusher = require("pusher")
+
 
 var httpserver = require('http');
 var socketIO = require('socket.io')
 var url = require('url');
 var lasttime = 0;
 var master = {}
+
 
 const app = express();
 const Role = db.role;
@@ -22,11 +25,23 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/video", express.static(__dirname))
+app.use(express.json());
+
+const pusher = new Pusher({
+    appId: "1234099",
+    key: "5391b962e408f216b9b0",
+    secret: "a8ea476c010edc52fb6d",
+    cluster: "us3",
+    useTLS: true
+  });
+
 
 
 db.mongoose.connect(
     'mongodb://127.0.0.1/SyncStream', 
-    { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true }
+    {   useCreateIndex: true, 
+        useNewUrlParser: true, 
+        useUnifiedTopology: true }
 ).then( () => {
     console.log("connected to MongoDB");
     initial();
@@ -39,10 +54,10 @@ app.get("/", (req, res) => {
     res.json({ message: "Sync Stream Application"});
 });
 
+////////////////////////////////////////////////////////////////////
+
 require("./routes/signInR")(app);
 require("./routes/roleroutes")(app);
-// require("./routes/uploadvideo")(app);
-
 
 function initial() {
     Role.estimatedDocumentCount((err,count) => {
@@ -71,7 +86,7 @@ function initial() {
     });
 }
 
-
+////////////////////////////////////////////////////////////////////
 
 io.on('connection', function(socket) {
   const requrl = socket.handshake.url
@@ -106,6 +121,68 @@ io.on('connection', function(socket) {
     }
   });
 });
+
+////////////////////////////////////////////////////////////////////
+
+// const database = mongoose.connection
+// database.once('open', ()=>{
+//     console.log("database is connected")
+
+//     const chatCollection = database.collection("SyncStream");
+//     const changeStream = chatCollection.watch();
+
+    // changeStream.on('change', (change)=>{
+    //     console.log(change);
+
+        // // put all data in fullDocuments in comment
+        // if(change.operationType === 'insert'){
+        //     const commentDetails = change.fullDocument;
+        //     pusher.trigger('chats', 'inserted', {
+        //         user_name: commentDetails.user_name,
+        //         comment: commentDetails.comment,
+        //         timestamp: commentDetails.timestamp,
+        //         received: commentDetails.received,
+        //     });
+        // }else{
+        //     console.log('Error triggering Pusher');
+        // }
+
+    // });
+// })
+
+const Comments = db.comments
+
+const ncomm = new Comments({
+    comment: "DF",
+    user_name: "DSFSDF",
+    timestamp: "SDFSDFSDF",
+    received: true
+})
+
+ncomm.save()
+
+app.get('/comments/sync', (req, res) => {
+    Comments.find((err ,data)=>{
+        if(err){
+            res.status(500).send(err)
+        }else{
+            res.status(200).send(data)
+        }
+    })
+})
+
+app.post('/comments/new', (req, res) => {
+    const dbComment = req.body
+
+    Comments.create(dbComment, (err ,data)=>{
+        if(err){
+            res.status(500).send(err)
+        }else{
+            res.status(201).send(data)
+        }
+    })
+})
+////////////////////////////////////////////////////////////////////
 
 server.listen(4000, function() {
     console.log("listening");

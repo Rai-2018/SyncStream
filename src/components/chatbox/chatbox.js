@@ -1,4 +1,4 @@
-import './App.css';
+import './chatbox.css';
 import React from "react";
 import Chat from './Chat';
 import Pusher from "pusher-js";
@@ -6,7 +6,7 @@ import Pusher from "pusher-js";
 import axios from "./axios";
 
 
-function App() {
+function Chatbox() {
   const [comments, setComments] = React.useState([]);
 
   React.useEffect(() => {
@@ -47,10 +47,7 @@ function App() {
       </div>
       
     </div>
-
-
-
   );
 }
 
-export default App;
+export default Chatbox;
