@@ -9,9 +9,3 @@ const Role = mongoose.model(
 
 module.exports = Role;
 
-
-// const RoleSchem = mongoose.Schema({
-//     name: { type: String, required: true },
-// });
-
-// module.exports = mongoose.model('Role', RoleSchem);

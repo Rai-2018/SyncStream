@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { withStyles } from '@material-ui/styles';
-import './App.css';
+// import './App.css';
 import AppBar from "@material-ui/core/AppBar"
 import IconButton from '@material-ui/core/IconButton';
 import AuthService from './services/auth-service';
@@ -16,8 +16,8 @@ import BoardAdmin from './components/board-admin';
 import { makeStyles, Typography } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
 import {Player as VideoPlayer} from './components/video/video';
-
-
+import Upload from './components/upload/upload';
+import Chatbox from './components/chatbox/chatbox';
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
@@ -136,6 +136,8 @@ class App extends React.Component {
             <Route exact path={"/mod"} component={BoardModerator} />
             <Route exact path={"/admin"} component={BoardAdmin} />
             <Route exact path='/video' component={VideoPlayer}/>
+            <Route exact path='/upload' component={Upload}/>
+            <Route exact path='/chat' component={Chatbox}/>
 
           </Switch>
         </div>

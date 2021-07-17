@@ -1,0 +1,173 @@
+body {
+  background: #e8e7e7; 
+  font-family: arial;
+  text-transform: uppercase;
+}
+
+header {
+  color: #FFF;
+  padding: 5px 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  background-color: #008CBA;
+  border-bottom: solid 2px #418ce2;
+}
+
+header h1 {
+  flex-grow: 1;
+  font-size: 1.5em;
+  letter-spacing: 2px;
+  font-weight: normal;
+}
+
+button{
+  display: inline-block;
+  border: none;
+  color:white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  background-color: #79a8a9;
+  margin: 15px;
+}
+
+button, 
+input[type=submit] {
+  outline: none;
+  transition: background-color 0.2s ease,
+  color 0.2s ease;
+}
+
+/* ICONS */
+
+svg {
+  width: 28px;
+  height: 19px;
+  margin-right: 5px;
+  fill: #F0F0F0;
+}
+
+.is-high-score {
+  fill: #FFC657;
+  animation: grow 0.35s ease-in-out;
+  transform-origin: 50% 50%;
+}
+
+@keyframes grow {
+  50% { transform: scale(1.4) rotate(-3deg); }
+}
+
+/* COMPONENT STYLES -------------------- */
+
+.list {
+  background: #fff;
+  width: 700px;
+  margin: 70px auto;
+  box-shadow: 0 2px 0 #008CBA;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.video {
+  display: flex;
+  font-size: 1.2em;
+  border-bottom: solid 2px #EEEEEE;
+  letter-spacing: 2px;
+}
+
+  .video:last-of-type {
+    border-bottom-color: #D4CAFF;
+  }
+
+  .video-name:hover .remove-video {
+    visibility: visible;
+  }
+
+  .video-name,
+  .counter-score {
+    color: #2F2366;
+  }
+
+  .video-name {
+    flex-grow: 1;
+    line-height: 3.5em;
+    padding-left: 10px;
+  }
+
+  .remove-video {
+    font-size: 1.15em;
+    border: none;
+    outline: none;
+    visibility: hidden;
+    color: #EF5350;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+    padding: 0;
+    background: none;
+  }
+
+.stats,
+.stopwatch {
+  width: 170px;
+}
+
+.stats {
+  margin: 0 0 0 28px;
+  font-weight: normal;
+}
+
+  .stats td:first-child {
+    text-align: right;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font-size: .7em;
+  }
+
+  .stats td:last-child {
+    text-align: left;
+  }
+
+.counter {
+  display: flex;
+  width: 250px;
+}
+
+  .counter-action {
+    border: none;
+    font-size: 1.15em;
+    font-weight: bold;
+    color: white;
+    background-color: #e7e7e7;
+    display: block;
+    padding: 20px 20px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .counter-action:hover {
+    color: #fff;
+  }
+
+  .play {
+    background-color: #39ac39;
+  }
+
+  .play:hover {
+    background: #83D97C;
+  }
+
+  .delete {
+    background-color: #e63900 ;
+  }
+  .delete:hover {
+    background: #ff9f80;
+  }
+
+  .counter-score {
+    flex-grow: 1;
+    text-align: center;
+    font-family: monospace;
+    font-size: 2em;
+    line-height: 2em;
+  }

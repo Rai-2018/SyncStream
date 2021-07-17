@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose =require('mongoose');
 // define data schema
 const chatSchema = mongoose.Schema({
     comment: String,
@@ -6,5 +6,6 @@ const chatSchema = mongoose.Schema({
     timestamp: String,
     received: Boolean,
 });
+
 //data collection 
-export default mongoose.model('commentcontents', chatSchema)
+module.exports = mongoose.model('commentcontents', chatSchema)
