@@ -1,0 +1,149 @@
+.chat{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.chat_header{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid lightcoral;
+}
+
+.chat_headerInfo{
+    flex:1;
+    padding-left: 20px;
+}
+
+.chat_body{
+    flex: 1;
+    padding: 30px;
+    /* background-position: center; */
+    /* background-repeat: repeat; */
+    overflow: scroll;
+}
+
+.sender{
+    text-align: left;
+}
+
+.sender_message{
+    display: inline-block;
+    position: relative;
+    font-size: 15px;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 5px;
+    background-color: rgb(198, 214, 235);
+    margin-bottom: 30px;
+}
+
+.sender_chat_timestamp{
+    margin-left: 10px;
+    font-size: xx-small;
+    color: rgb(117, 117, 117);
+    display: inline-block;
+}
+
+.sender_name{
+    float: left;
+    width: 200px;
+    top: -15px;
+    font-weight: 400;
+    font-size: x-small;
+    position: absolute;
+    
+}
+
+
+
+
+.reciever{
+    text-align: right;
+}
+
+
+.reciever_message{
+    display: inline-block;
+    position: relative;
+    font-size: 15px;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 5px;
+    margin-right: auto;
+    background-color: rgb(226, 202, 210);
+}
+
+.reciever_chat_timestamp{
+    display: inline-block;
+    margin-right: 10px;
+    font-size: xx-small;
+    color: rgb(117, 117, 117);
+    display: inline-block;
+}
+
+
+.reciever_name{
+    top: -15px;
+    right: 10px;
+    font-weight: 400;
+    font-size: x-small;
+    position: absolute;
+}
+
+.timestamp{
+    display: flex;
+}
+
+
+
+.chat_footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    border-top: 1px solid lightsalmon;
+    padding: 10px;
+    background-color: rgb(250, 226, 217);
+}
+
+.chat_footer > form{
+    flex: 1;
+    display: flex;
+}
+
+.chat_footer > form > input{
+    flex: 1;
+    border-radius: 40px;
+    padding: 10px;
+    border: none;
+}
+
+.button{
+    margin-left: 10px;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    -webkit-transition-duration: 0.6s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.button1 {
+    background-color: white; 
+    color: rgb(85, 83, 83); 
+}
+
+.button1:hover {
+    background-color: #f8b98f;
+    color: white;
+}
+
+
+/* .chat_footer > form > button{
+    display: none;   
+}*/
