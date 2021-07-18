@@ -18,6 +18,7 @@ import green from '@material-ui/core/colors/green';
 import {Player as VideoPlayer} from './components/video/video';
 import Upload from './components/upload/upload';
 import Chatbox from './components/chatbox/chatbox';
+import Main from './components/main/main';
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
@@ -138,6 +139,7 @@ class App extends React.Component {
             <Route exact path='/video' component={VideoPlayer}/>
             <Route exact path='/upload' component={Upload}/>
             <Route exact path='/chat' component={Chatbox}/>
+            <Route exact path='/main' component={Main}/>
 
           </Switch>
         </div>
