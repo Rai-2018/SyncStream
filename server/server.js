@@ -107,7 +107,7 @@ io.on('connection', function(socket) {
 
     } else if(action === "skip"){
       var date = Date.now();
-      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.03){
+      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.01){
         lasttime = date
         socket.broadcast.to(room_id).emit('message',obj.time);
       }
@@ -150,38 +150,38 @@ io.on('connection', function(socket) {
     // });
 // })
 
-const Comments = db.comments
+// const Comments = db.comments
 
-const ncomm = new Comments({
-    comment: "DF",
-    user_name: "DSFSDF",
-    timestamp: "SDFSDFSDF",
-    received: true
-})
+// const ncomm = new Comments({
+//     comment: "DF",
+//     user_name: "DSFSDF",
+//     timestamp: "SDFSDFSDF",
+//     received: true
+// })
 
-ncomm.save()
+// ncomm.save()
 
-app.get('/comments/sync', (req, res) => {
-    Comments.find((err ,data)=>{
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.status(200).send(data)
-        }
-    })
-})
+// app.get('/comments/sync', (req, res) => {
+//     Comments.find((err ,data)=>{
+//         if(err){
+//             res.status(500).send(err)
+//         }else{
+//             res.status(200).send(data)
+//         }
+//     })
+// })
 
-app.post('/comments/new', (req, res) => {
-    const dbComment = req.body
+// app.post('/comments/new', (req, res) => {
+//     const dbComment = req.body
 
-    Comments.create(dbComment, (err ,data)=>{
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.status(201).send(data)
-        }
-    })
-})
+//     Comments.create(dbComment, (err ,data)=>{
+//         if(err){
+//             res.status(500).send(err)
+//         }else{
+//             res.status(201).send(data)
+//         }
+//     })
+// })
 ////////////////////////////////////////////////////////////////////
 
 server.listen(4000, function() {

@@ -5,7 +5,6 @@ import { io } from "socket.io-client";
 import 'video.js/dist/video-js.css'
 import '@videojs/themes/dist/forest/index.css';
 
-
 class VideoPlayer extends React.Component {
     constructor(props){
         super(props);
@@ -131,8 +130,8 @@ class VideoPlayer extends React.Component {
     render() {
     return (
       <div> 
-        <div data-vjs-player>
-          <video className="video-js vjs-theme-forest" 
+        <div class='video-wrapper '>
+          <video className="video-js vjs-theme-forest vjs-16-9" 
                  ref={ node => this.videoNode = node }/>
         </div>
         <button type="button" onClick={this.synctime}>Start</button>
