@@ -1,5 +1,5 @@
 import React from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 import './upload.css';
 //import { Progress } from 'reactstrap';
 //import { ToastContainer, toast } from 'react-toastify';
@@ -28,15 +28,37 @@ const Video = (props) => {
 }
 
 // class UploadVideo extends React.Component {
-//     state = 
+//     state = {
+//         selectedVideo: null,
+//         loading: 0
+//     }
+
+//     oneFile = event => {
+//         var files = event.target.files;
+//         if(files.length != 1){
+//             toast.error("Please only submit one file");
+//             event.target.value = null;
+//             return false;
+//         }else {
+//             return true;
+//         }
+//     }
 
 //     fileSelectedHandler = event => {
-//         console.log(event.target.files[0]);
+//         const files = event.target.files;
+//         if(this.oneFile(event)){
+//             this.setState({
+//                 selectedVideo: files,
+//                 loading: 0
+//             });
+//         }
 //     }
 
-//     fileUploadHandler = () => {
-
-//     }
+//     // fileUploadHandler = (event) => {
+//     //     const data = new FormData();
+//     //     data.append('file', this.state.selectedVideo[0]);
+//     // }
+//     // axios.post('http://127.0.0.1:')
 
 
 // }

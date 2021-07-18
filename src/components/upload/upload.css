@@ -62,10 +62,11 @@ svg {
 
 .list {
   background: #fff;
-  width: 700px;
+  width: auto;
   margin: 70px auto;
-  box-shadow: 0 2px 0 #008CBA;
   border-radius: 6px;
+  border-style: solid;
+  border-color: #008CBA;
   overflow: hidden;
 }
 
