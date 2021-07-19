@@ -15,6 +15,7 @@ import {Player as VideoPlayer} from './components/video/video';
 import Upload from './components/upload/upload';
 import Chatbox from './components/chatbox/chatbox';
 import Main from './components/main/main';
+import SignIn from './components/loginr';
 
 import green from '@material-ui/core/colors/green';
 import AppBar from "@material-ui/core/AppBar"
@@ -22,6 +23,7 @@ import { IconButton , Toolbar, makeStyles, Typography, Button} from '@material-u
 import SvgIcon from '@material-ui/core/SvgIcon';
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+
 function HomeIcon(props) {
   return (
     <SvgIcon {...props}>
@@ -29,13 +31,6 @@ function HomeIcon(props) {
     </SvgIcon>
   );
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    '> *': {
-      margin: theme.spacing(3),
-  }}
-}));
 
 
 class App extends React.Component {
@@ -76,7 +71,7 @@ class App extends React.Component {
             Sync Stream
           </Typography>
   
-          <Toolbar className={classes.root}>
+          <Toolbar>
 
             {showModeratorBoard && (
               <IconButton color="inherit">
@@ -103,7 +98,7 @@ class App extends React.Component {
 
                 <Button color="inherit" color="green" variant="contained">
                   <Link to={"/main"} >
-                    <HomeIcon color="inherit" color="green"/>
+                    Main
                   </Link>
                 </Button>
 
@@ -152,6 +147,7 @@ class App extends React.Component {
             <Route exact path='/upload' component={Upload}/>
             <Route exact path='/chat' component={Chatbox}/>
             <Route exact path='/main' component={Main}/>
+            <Route exact path='/loginr' component={SignIn}/>
 
           </Switch>
         </div>
@@ -161,5 +157,5 @@ class App extends React.Component {
   }
 }
 
-// export default App;
-export default withStyles(useStyles)(App)
+export default App;
+// export default withStyles(useStyles)(App)
