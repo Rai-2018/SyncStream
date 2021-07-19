@@ -1,10 +1,8 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { withStyles } from '@material-ui/styles';
-// import './App.css';
-import AppBar from "@material-ui/core/AppBar"
-import IconButton from '@material-ui/core/IconButton';
+
+
 import AuthService from './services/auth-service';
 import Login from './components/login';
 import Register from './components/register';
@@ -13,27 +11,30 @@ import Profile from './components/profile';
 import BoardUser from './components/board-user';
 import BoardModerator from './components/board-moderator';
 import BoardAdmin from './components/board-admin';
-import { makeStyles, Typography } from '@material-ui/core';
-import green from '@material-ui/core/colors/green';
 import {Player as VideoPlayer} from './components/video/video';
 import Upload from './components/upload/upload';
 import Chatbox from './components/chatbox/chatbox';
 import Main from './components/main/main';
 
+import green from '@material-ui/core/colors/green';
+import AppBar from "@material-ui/core/AppBar"
+import { IconButton , Toolbar, makeStyles, Typography, Button} from '@material-ui/core';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { createTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
+}
+
 const useStyles = makeStyles(theme => ({
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  },
-  customColor: {
-    backgroundColor: green[500]
-  },
-  customHeight: {
-    minHeight: 200
-  },
-  offset: theme.mixins.toolbar
+  root: {
+    '> *': {
+      margin: theme.spacing(3),
+  }}
 }));
 
 
@@ -71,16 +72,11 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <AppBar position="static">
-          <Typography component="h1" variant="h1" className={classes.title} align="center">
+          <Typography component="h3" variant="h3" align="center">
             Sync Stream
           </Typography>
-          
-
-          <IconButton color="inherit">
-            <Link to={"/main"} >
-              Home
-            </Link>
-          </IconButton>
+  
+          <Toolbar className={classes.root}>
 
             {showModeratorBoard && (
               <IconButton color="inherit">
@@ -88,48 +84,64 @@ class App extends React.Component {
               </IconButton>
               
             )}
-            {showAdminBoard && (
 
-            <IconButton color="inherit">
-                <Link to={"/admin"} className="nav-link">Admin Board</Link>
-            </IconButton>
-              
+            {showAdminBoard && (
+              <IconButton color="inherit">
+                  <Link to={"/admin"} className="nav-link">Admin Board</Link>
+              </IconButton>
             )}
-            {currentUser && (
+
+{/*            {currentUser !==  undefined && (
               <IconButton color="inherit" align="center">
                 <Link to={"/user"} className="nav-link">User</Link>
               </IconButton>
-            )}
+            )}*/}
 
-          {currentUser ? (
-            
-            <React.Fragment>
-              <IconButton color="inherit">
-                <Link to={"/profile"} className="nav-link">{ currentUser.username }</Link>
-              </IconButton>
-              
-              <IconButton color="inherit">
-                <a href="/login" className="nav-link" onClick={this.logOut}>Log Out</a>
-              </IconButton>
-              
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <IconButton color="inherit">
-                <Link to={"/login"} className="nav-link">Login</Link>
-              </IconButton>
+          {
+            currentUser ? (
+              <React.Fragment>
 
-              <IconButton color="inherit">
-                <Link to={"/register"} className="nav-link">Sign Up</Link>
-              </IconButton>
-              
-            </React.Fragment>
-          )}
+                <Button color="inherit" color="green" variant="contained">
+                  <Link to={"/main"} >
+                    <HomeIcon color="inherit" color="green"/>
+                  </Link>
+                </Button>
 
+                &nbsp;
+                &nbsp;
+                
+                <Button color="inherit" color="green" variant="contained">
+                  <Link to={"/profile"} className="nav-link">{ currentUser.username }</Link>
+                </Button>
+
+                &nbsp;
+                &nbsp;
+                <Button color="inherit" color="green" variant="contained">
+                  <a href="/login" className="nav-link" onClick={this.logOut}>Log Out</a>
+                </Button>
+                
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Button color="inherit" color="green" variant="contained">
+                  <Link to={"/login"} className="nav-link">Login</Link>
+                </Button>
+                &nbsp;
+                &nbsp;
+                <Button color="inherit" color="green" variant="contained">
+                  <Link to={"/register"} className="nav-link">Sign Up</Link>
+                </Button>
+                
+              </React.Fragment>
+            )
+          }
+        </Toolbar>
         </AppBar>
+
+
         <div className="container mt-3">
           <Switch>
-            <Route exact path={["/", "/home"]} component={Home} />
+            <Route exact path={["/", "/home"]} component={Login} />
             <Route exact path={"/login"} component={Login} />
             <Route exact path={"/register"} component={Register} />
             <Route exact path={"/profile"} component={Profile} />
