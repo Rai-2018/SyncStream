@@ -41,7 +41,7 @@ input[type=submit] {
 
 /* ICONS */
 
-svg {
+.list svg {
   width: 28px;
   height: 19px;
   margin-right: 5px;

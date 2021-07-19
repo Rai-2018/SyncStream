@@ -19,7 +19,6 @@ class VideoPlayer extends React.Component {
         console.log( "user_id: " + this.state['user_id'])
     }
 
-
     ProcessCommand(data){
       if(data === "play"){
         console.log("Processing: play")
@@ -46,7 +45,6 @@ class VideoPlayer extends React.Component {
             "action": "play",
         }));
       }
-      
     }
 
     componentDidMount() {
@@ -103,7 +101,6 @@ class VideoPlayer extends React.Component {
           });
 
         });
-
     }
 
     // destroy player on unmount

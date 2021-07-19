@@ -139,7 +139,7 @@ class Upload extends React.Component {
     render(){
         return (
             <div>
-                <div className="list">
+                <div className="list" >
                     <Header 
                     title="video list" 
                     totalvideos={this.state.videos.length} 

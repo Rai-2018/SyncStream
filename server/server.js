@@ -27,14 +27,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/video", express.static(__dirname))
 app.use(express.json());
 
-const pusher = new Pusher({
-    appId: "1234099",
-    key: "5391b962e408f216b9b0",
-    secret: "a8ea476c010edc52fb6d",
-    cluster: "us3",
-    useTLS: true
-  });
-
 
 
 db.mongoose.connect(
