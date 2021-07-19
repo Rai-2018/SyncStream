@@ -132,7 +132,8 @@ class VideoPlayer extends React.Component {
     return (
       <div> 
         <div data-vjs-player>
-          <video className="video-js vjs-theme-forest" 
+          <video className="video-js vjs-theme-forest vjs-16-9" 
+                 style={{width: "auto"}} 
                  ref={ node => this.videoNode = node }/>
         </div>
         <button type="button" onClick={this.synctime}>Start</button>

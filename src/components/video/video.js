@@ -15,7 +15,7 @@ class Player extends React.Component {
         }
         return (
             <div>
-            <VideoPlayer style={{width: "auto"}} { ...videoJsOptions }  />
+            <VideoPlayer { ...videoJsOptions }  />
             </div>
         )
     }
