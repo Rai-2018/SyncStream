@@ -77,7 +77,7 @@ class App extends React.Component {
           
 
           <IconButton color="inherit">
-            <Link to={"/home"} >
+            <Link to={"/main"} >
               Home
             </Link>
           </IconButton>
