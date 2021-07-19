@@ -5,7 +5,6 @@ import { io } from "socket.io-client";
 import 'video.js/dist/video-js.css'
 import '@videojs/themes/dist/forest/index.css';
 
-
 class VideoPlayer extends React.Component {
     constructor(props){
         super(props);

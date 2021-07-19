@@ -11,12 +11,12 @@ class Player extends React.Component {
             src: 'http://localhost:4000/video/a.mp4',
             type: 'video/mp4',
             fluid: true,
+            fill:true,
+            responsive:true
           }]
         }
         return (
-            <div>
             <VideoPlayer { ...videoJsOptions }  />
-            </div>
         )
     }
 
