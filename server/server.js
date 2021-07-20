@@ -85,14 +85,11 @@ io.on('connection', function(socket) {
   socket.join(room_id);
   console.log("Opening new connection: room_id: " + room_id);
 
-  socket.on('message',msg => {
-    const message = new Msg({msg:msg});
-    message.save().then(()=>{
-        console.log('Message received on server: ', msg)
-        io.emit('newmessage',msg)
-    })
-    
-});
+  socket.on('newmessage',msg => {
+      console.log('Message received: ', msg)
+      io.emit('newmessage',msg)
+  });
+
 
   socket.on('message', function(message) {
     const obj = JSON.parse(message)
