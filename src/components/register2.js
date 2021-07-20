@@ -1,25 +1,24 @@
-import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-// import {ValidatorForm, TextValidator} from "react-material-ui-form-validator"
-import AuthService from "../services/auth-service";
-import { isEmail } from "validator";
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import PropTypes from 'prop-types';
-
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import PropTypes from 'prop-types'
+import Form from "react-validation/build/form";
 import Alert from '@material-ui/lab/Alert';
+
+import AuthService from "../services/auth-service";
+import CheckButton from "react-validation/build/button";
+
+import { isEmail } from "validator";
 
 const styles = (theme) => ({
     paper: {
@@ -71,6 +70,7 @@ const vemail = value => {
 };
 
 const vusername = value => {
+    console.log(value)
     if(value === ""){
         return (<div>username cannot be empty</div>);
     }
@@ -84,7 +84,6 @@ const vusername = value => {
 };
 
 const vpassword = value => {
-    console.log(value);
     if(value === ""){
         return (<div>password cannot be empty</div>);
     }
@@ -98,10 +97,6 @@ const vpassword = value => {
     }
 };
 
-// const validate = {
-//     username: name => vusername(name),
-//     emimail
-// }
 
 class Register extends React.Component {
     constructor(props) {
@@ -177,20 +172,23 @@ class Register extends React.Component {
                 <div className={classes.paper}>
                     
                     <Form className={classes.form} onSubmit={this.handleRegister} ref={c => { this.form=c; }}>
+
                         {!this.state.successful && (
-                            <React.Fragment>
-                                <TextField 
-                                    className={classes.input}
-                                    autoComplete="username"
-                                    name="username"
+                                <div>
+
+                                  <TextField 
                                     variant="outlined"
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    autoFocus 
-                                    value={this.state.username}
-                                    onChange={this.onChangeUsername}
-                                    validations={[require, vusername]}
+                                      margin="normal"
+                                      required
+                                      fullWidth
+                                      name="username"
+                                      label="Username"
+                                      type="username"
+                                      id="username"
+                                      autoComplete="current-username"
+                                      value={this.state.username}
+                                      onChange={this.onChangeUsername}
+                                      validations={[required,vusername]}
                                 />
                                 {/* <TextValidator
                                     label="Email"
@@ -201,44 +199,47 @@ class Register extends React.Component {
                                     errorMessages={["this field is required", "email is not valid"]} /> */}
 
                                 <TextField 
-                                    className={classes.input}
-                                    autoComplete="email"
-                                    name="email"
                                     variant="outlined"
-                                    fullWidth
-                                    id="email"
-                                    label="Email"
-                                    autoFocus 
-                                    value={this.state.email}
-                                    onChange={this.onChangeEmail}
-                                    validations={[require,vemail]}
+                                      margin="normal"
+                                      required
+                                      fullWidth
+                                      name="email"
+                                      label="Email"
+                                      type="email"
+                                      id="email"
+                                      autoComplete="current-email"
+                                      value={this.state.email}
+                                      onChange={this.onChangeEmail}
+                                      validations={[required,vemail]}
                                 />
 
                                 <TextField 
-                                    className={classes.input}
-                                    autoComplete="password"
-                                    name="password"
                                     variant="outlined"
-                                    fullWidth
-                                    id="password"
-                                    label="Password"
-                                    autoFocus 
-                                    value={this.state.password}
-                                    onChange={this.onChangePassword}
-                                    validations={[require,vpassword]}
+                                      margin="normal"
+                                      required
+                                      fullWidth
+                                      name="password"
+                                      label="Password"
+                                      type="password"
+                                      id="password"
+                                      autoComplete="current-password"
+                                      value={this.state.password}
+                                      onChange={this.onChangePassword}
+                                      validations={[required,vpassword]}
                                 />
                                 
-                                <Button 
-                                    className={classes.input}
-                                    type="submit"
-                                    fullwidith
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submit}
+                                <Button
+                                  type="submit"
+                                  fullWidth
+                                  variant="contained"
+                                  color="primary"
+                                  className={classes.submit}
                                 >
-                                    Sign Up
+                                  Sign up
                                 </Button>
-                            </React.Fragment>
+                                <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
+
+                            </div>
                         )}
                         {this.state.message && (
                             <div className="form-group">
@@ -246,9 +247,10 @@ class Register extends React.Component {
                                     severity={this.state.successful?"success":"error"}>
                                     {this.state.message}
                                 </Alert>
+                                <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
+
                             </div>
                         )}
-                        <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
                     </Form>
                 </div>
             </Container>

@@ -83,7 +83,7 @@ const vpassword = value => {
     }
 };
 
-export default class Register extends Component {
+export default class Register2 extends Component {
     constructor(props) {
         super(props);
         this.handleRegister = this.handleRegister.bind(this);
@@ -209,7 +209,8 @@ export default class Register extends Component {
                                 </div>
                             </div>
                         )}
-                        <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
+                      <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
+
                     </Form>
                 </div>
             </div>

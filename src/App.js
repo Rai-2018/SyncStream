@@ -17,7 +17,7 @@ import Chatbox from './components/chatbox/chatbox';
 import Main from './components/main/main';
 import SignIn from './components/loginr';
 import Register from './components/register2';
-
+import Register2 from './components/register';
 import green from '@material-ui/core/colors/green';
 import AppBar from "@material-ui/core/AppBar"
 import { IconButton , Toolbar, makeStyles, Typography, Button} from '@material-ui/core';
@@ -139,7 +139,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path={["/", "/home"]} component={SignIn} />
             <Route exact path={"/login"} component={SignIn} />
-            <Route exact path={"/register"} component={Register} />
+            <Route exact path={"/register"} component={Register2} />
             <Route exact path={"/profile"} component={Profile} />
             <Route exact path={"/user"} component={BoardUser} />
             <Route exact path={"/mod"} component={BoardModerator} />
@@ -149,6 +149,7 @@ class App extends React.Component {
             <Route exact path='/chat' component={Chatbox}/>
             <Route exact path='/main' component={Main}/>
             <Route exact path='/loginr' component={SignIn}/>
+            <Route exact path='/register2' component={Register}/>
             
           </Switch>
         </div>

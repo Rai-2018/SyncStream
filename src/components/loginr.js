@@ -81,6 +81,7 @@ class SignIn extends React.Component {
     }
 
     onChangeUsername(e) {
+        console.log(this.state.username)
         this.setState({
             username: e.target.value
         });
