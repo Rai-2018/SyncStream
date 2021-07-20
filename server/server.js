@@ -4,8 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
-const Pusher = require("pusher")
-
+const Msg = require('./models/chat');
 
 var httpserver = require('http');
 var socketIO = require('socket.io')
@@ -85,6 +84,15 @@ io.on('connection', function(socket) {
   const room_id = url.parse(requrl, true).query.roomid;
   socket.join(room_id);
   console.log("Opening new connection: room_id: " + room_id);
+
+  socket.on('message',msg => {
+    const message = new Msg({msg:msg});
+    message.save().then(()=>{
+        console.log('Message received on server: ', msg)
+        io.emit('newmessage',msg)
+    })
+    
+});
 
   socket.on('message', function(message) {
     const obj = JSON.parse(message)

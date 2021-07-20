@@ -13,7 +13,7 @@ import BoardModerator from './components/board-moderator';
 import BoardAdmin from './components/board-admin';
 import {Player as VideoPlayer} from './components/video/video';
 import Upload from './components/upload/upload';
-import Chatbox from './components/chatbox/chatbox';
+import Chatbox from './components/chatbox/Chat';
 import Main from './components/main/main';
 import SignIn from './components/loginr';
 
