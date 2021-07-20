@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/styles';
 
 import AuthService from './services/auth-service';
 import Login from './components/login';
-import Register from './components/register';
+// import Register from './components/register';
 import Home from './components/home';
 import Profile from './components/profile';
 import BoardUser from './components/board-user';
@@ -16,6 +16,7 @@ import Upload from './components/upload/upload';
 import Chatbox from './components/chatbox/chatbox';
 import Main from './components/main/main';
 import SignIn from './components/loginr';
+import Register from './components/register2';
 
 import green from '@material-ui/core/colors/green';
 import AppBar from "@material-ui/core/AppBar"
@@ -148,7 +149,7 @@ class App extends React.Component {
             <Route exact path='/chat' component={Chatbox}/>
             <Route exact path='/main' component={Main}/>
             <Route exact path='/loginr' component={SignIn}/>
-
+            
           </Switch>
         </div>
         

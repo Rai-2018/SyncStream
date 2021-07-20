@@ -5,13 +5,50 @@ import CheckButton from "react-validation/build/button";
 
 import AuthService from "../services/auth-service";
 import { isEmail } from "validator";
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
+
+const styles = (theme) => ({
+    paper: {
+      marginTop: theme.spacing(5),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+    container: {
+      marginTop: theme.spacing(1),
+    }
+  });
 
 const required = value => {
     if(!value) {
         return (
-            <div className = "alert alert-danger" role = "alert">
+            <Alert severity = "warning">
                 This field is required!
-            </div>
+            </Alert>
         );
     }
 };
@@ -19,9 +56,9 @@ const required = value => {
 const email = value => {
     if(!isEmail(value)) {
         return (
-            <div className = "alert alert-danger" role = "alert">
+            <Alert severity = "warning">
                 This is not a valid email!
-            </div>
+            </Alert>
         );
     }
 };
@@ -29,9 +66,9 @@ const email = value => {
 const vusername = value => {
     if(value.length < 3 || value.length > 20) {
         return (
-            <div className="alert alert-danger" role='alert'>
+            <Alert severity = "warning">
                 Username must be between 3-20 characters.
-            </div>
+            </Alert>
         );
     }
 };
@@ -39,9 +76,9 @@ const vusername = value => {
 const vpassword = value => {
     if(value.length < 6 || value.length > 40) {
         return (
-            <div className="alert alert-danger" role='alert'>
+            <Alert severity = "warning">
                 Password must be between 6 and 40 characters.
-            </div>
+            </Alert>
         );
     }
 };
@@ -112,6 +149,7 @@ export default class Register extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         return (
             <div className="col-md-12">
                 <div className="card card-container">

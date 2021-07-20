@@ -25,7 +25,7 @@ checkDuplicates = (req, res, next) => {
             }
     
             if(user) {
-                res.status(400).send({ message: "Username in use already." });
+                res.status(400).send({ message: " already." });
                 return;
             }
 
