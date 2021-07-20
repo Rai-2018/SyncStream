@@ -5,7 +5,6 @@ import { io } from "socket.io-client";
 import 'video.js/dist/video-js.css'
 import '@videojs/themes/dist/forest/index.css';
 
-
 class VideoPlayer extends React.Component {
     constructor(props){
         super(props);
@@ -19,7 +18,6 @@ class VideoPlayer extends React.Component {
         console.log( "room_id: " + this.state['room_id'])
         console.log( "user_id: " + this.state['user_id'])
     }
-
 
     ProcessCommand(data){
       if(data === "play"){
@@ -47,7 +45,6 @@ class VideoPlayer extends React.Component {
             "action": "play",
         }));
       }
-      
     }
 
     componentDidMount() {
@@ -104,7 +101,6 @@ class VideoPlayer extends React.Component {
           });
 
         });
-
     }
 
     // destroy player on unmount
@@ -132,7 +128,8 @@ class VideoPlayer extends React.Component {
     return (
       <div> 
         <div data-vjs-player>
-          <video className="video-js vjs-theme-forest" 
+          <video className="video-js vjs-theme-forest vjs-16-9" 
+                 style={{width: "auto"}} 
                  ref={ node => this.videoNode = node }/>
         </div>
         <button type="button" onClick={this.synctime}>Start</button>

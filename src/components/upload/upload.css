@@ -10,8 +10,8 @@ header {
   text-align: center;
   display: flex;
   align-items: center;
-  background-color: #008CBA;
-  border-bottom: solid 2px #418ce2;
+  background-color: #79a8a9;
+  border-bottom: solid 2px #79a8a9;
 }
 
 header h1 {
@@ -41,7 +41,7 @@ input[type=submit] {
 
 /* ICONS */
 
-svg {
+.list svg {
   width: 28px;
   height: 19px;
   margin-right: 5px;
@@ -62,10 +62,11 @@ svg {
 
 .list {
   background: #fff;
-  width: 700px;
+  width: auto;
   margin: 70px auto;
-  box-shadow: 0 2px 0 #008CBA;
   border-radius: 6px;
+  border-style: solid;
+  border-color: #79a8a9;
   overflow: hidden;
 }
 
@@ -76,9 +77,9 @@ svg {
   letter-spacing: 2px;
 }
 
-  .video:last-of-type {
-    border-bottom-color: #D4CAFF;
-  }
+  /* .video:last-of-type {
+    border-bottom-color: #79a8a9;
+  } */
 
   .video-name:hover .remove-video {
     visibility: visible;
@@ -128,27 +129,6 @@ svg {
     text-align: left;
   }
 
-.counter {
-  display: flex;
-  width: 250px;
-}
-
-  .counter-action {
-    border: none;
-    font-size: 1.15em;
-    font-weight: bold;
-    color: white;
-    background-color: #e7e7e7;
-    display: block;
-    padding: 20px 20px;
-    cursor: pointer;
-    outline: none;
-  }
-
-  .counter-action:hover {
-    color: #fff;
-  }
-
   .play {
     background-color: #39ac39;
   }
@@ -164,10 +144,59 @@ svg {
     background: #ff9f80;
   }
 
-  .counter-score {
-    flex-grow: 1;
-    text-align: center;
-    font-family: monospace;
-    font-size: 2em;
-    line-height: 2em;
-  }
+
+.files input {
+  outline: 2px dashed #92b0b3;
+  outline-offset: -10px;
+  -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+  transition: outline-offset .15s ease-in-out, background-color .15s linear;
+  padding: 120px 0px 85px 35%;
+  text-align: center !important;
+  margin: 0;
+  width: 65% !important;
+}
+
+.files input:focus {
+  outline: 2px dashed #92b0b3;
+  outline-offset: -10px;
+  -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+  transition: outline-offset .15s ease-in-out, background-color .15s linear; 
+  border:1px solid #92b0b3;
+}
+
+.files {
+  position:relative
+}
+
+.files::after {  
+  pointer-events: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 50px;
+  right: 0;
+  height: 56px;
+  content: "";
+  background-image: url('https://image.flaticon.com/icons/png/128/109/109612.png');
+  display: block;
+  margin: 0 auto;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.files::before {
+  position: absolute;
+  bottom: 10px;
+  left: 0;  
+  pointer-events: none;
+  width: 100%;
+  right: 0;
+  height: 123px;
+  content: " Drop Video Here ";
+  display: block;
+  margin: 0 auto;
+  color: #2ea591;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+}

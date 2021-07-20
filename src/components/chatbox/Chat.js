@@ -1,109 +1,69 @@
-import React from 'react';
-import './Chat.css';
-import { Avatar } from "@material-ui/core";
-// import InsertEmotionIcon from "@material-ui/icons/InsertEmoticon";
-import axios from "./axios";
-import { func } from 'prop-types';
+import React, { useState, useEffect } from "react";
+import io from 'socket.io-client';
+import "./Chat.css";
+const socket = io('http://localhost:4000')
+const userName = 'User ' + parseInt(Math.random() * 3)
+function App() {
+  const [message, setMessage] = useState('')
+  const [chat, setChat] = useState([])
 
-function Chat({ comments }) {
+  useEffect(() => {
+    socket.on('message', msg => {
+      setChat([...chat, msg])
+    })
+  })
 
-    var checkReceiver = function (comment) {
-        if (comment.received) {
-            return (
-                <div className={"sender"}>
-                    <p className="sender_message">
-                        <span className="sender_name">
-                            {comment.user_name}
-                        </span>
-                        {comment.comment}
-                    </p>
-                    <span className="sender_chat_timestamp">
-                        {comment.timestamp}
-                    </span>
+  const sendMessage = (e) => {
+    e.preventDefault();
+    console.log(message)
+    socket.emit('message', { userName, message })
+    setMessage('')
+  };
 
-                </div>
-            );
-
-        } else {
-            return (
-                <div className="reciever">
-                    {/* timestamp */}
-                    <span className="reciever_chat_timestamp">
-                        {comment.timestamp}
-                    </span>
-                    <p className="reciever_message">
-                        <span className="reciever_name">
-                            {comment.user_name}
-                        </span>
-                        {comment.comment}
-                    </p>
-                </div>
-            );
-
-        }
-    };
-
-
-    const sendMessage = async (e) => {
-        e.preventDefault();
-
-        await axios.post('/comments/new', {
-            comment: input,
-            user_name: "User 1",
-            timestamp: "July 11 2021",
-            received: false,
-        });
-
-        setInput("");
-    };
-
-    const [input, setInput] = React.useState("");
-
-    return (
+  return (
+    <div className="app">
+      <div className="app_body">
         <div className="chat">
-            <div className="chat_header">
-                <Avatar src="https://images.unsplash.com/photo-1585218356057-dc0e8d3558bb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80" />
-
-                <div className="chat_headerInfo">
-                    <h2>Room 1</h2>
-                </div>
-
-                <div className="chat_headerRight">
-
-                </div>
-
+          <div className="chat_header">
+            <div className="chat_headerInfo">
+              <h2>Room 1</h2>
             </div>
-
-            <div className="chat_body">
-                {comments.map(comment =>
-                    checkReceiver(comment)
-                )}
+            <div className="chat_headerRight">
             </div>
+          </div>
 
-
-            <div className="chat_footer">
-                {/* <InsertEmotionIcon /> */}
-
-                <form>
-                    <input
-                        // value={input}
-                        // onChange={(e) => setInput(e.target.value)}
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        placeholder="Type the comment"
-                        type="text"
-                    />
-                    <button onClick={sendMessage} class="button button1 " type="submit">
-
-                        Send
-                    </button>
-                </form>
-
+          <div className="chat_body">
+            <div className={"sender"}>
+              {chat.map((payload, index) => {
+              return (
+                <p className="text" key={index}>{payload.userName}:
+                 <span>{payload.message}</span>
+                 <span className="sender_chat_timestamp">
+                {new Date().toUTCString()}
+                </span>
+                </p>
+                )
+              })}
             </div>
+          </div>
 
 
+          <div className="chat_footer">
+            <form onSubmit={sendMessage}>
+              <input type="text" name="message"
+                placeholder='Type message'
+                value={message}
+                onChange={(e) => { setMessage(e.target.value) }}
+                required
+              ></input>
+              <button className="button button1" type='submit'>Send</button>
+            </form>
+
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
 
-export default Chat
+export default App;

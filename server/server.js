@@ -4,8 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
-const Pusher = require("pusher")
-
+const Msg = require('./models/chat');
 
 var httpserver = require('http');
 var socketIO = require('socket.io')
@@ -26,14 +25,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/video", express.static(__dirname))
 app.use(express.json());
-
-const pusher = new Pusher({
-    appId: "1234099",
-    key: "5391b962e408f216b9b0",
-    secret: "a8ea476c010edc52fb6d",
-    cluster: "us3",
-    useTLS: true
-  });
 
 
 
@@ -94,6 +85,15 @@ io.on('connection', function(socket) {
   socket.join(room_id);
   console.log("Opening new connection: room_id: " + room_id);
 
+  socket.on('message',msg => {
+    const message = new Msg({msg:msg});
+    message.save().then(()=>{
+        console.log('Message received on server: ', msg)
+        io.emit('newmessage',msg)
+    })
+    
+});
+
   socket.on('message', function(message) {
     const obj = JSON.parse(message)
     var action = obj.action
@@ -107,7 +107,7 @@ io.on('connection', function(socket) {
 
     } else if(action === "skip"){
       var date = Date.now();
-      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.03){
+      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.01){
         lasttime = date
         socket.broadcast.to(room_id).emit('message',obj.time);
       }
@@ -150,38 +150,38 @@ io.on('connection', function(socket) {
     // });
 // })
 
-const Comments = db.comments
+// const Comments = db.comments
 
-const ncomm = new Comments({
-    comment: "DF",
-    user_name: "DSFSDF",
-    timestamp: "SDFSDFSDF",
-    received: true
-})
+// const ncomm = new Comments({
+//     comment: "DF",
+//     user_name: "DSFSDF",
+//     timestamp: "SDFSDFSDF",
+//     received: true
+// })
 
-ncomm.save()
+// ncomm.save()
 
-app.get('/comments/sync', (req, res) => {
-    Comments.find((err ,data)=>{
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.status(200).send(data)
-        }
-    })
-})
+// app.get('/comments/sync', (req, res) => {
+//     Comments.find((err ,data)=>{
+//         if(err){
+//             res.status(500).send(err)
+//         }else{
+//             res.status(200).send(data)
+//         }
+//     })
+// })
 
-app.post('/comments/new', (req, res) => {
-    const dbComment = req.body
+// app.post('/comments/new', (req, res) => {
+//     const dbComment = req.body
 
-    Comments.create(dbComment, (err ,data)=>{
-        if(err){
-            res.status(500).send(err)
-        }else{
-            res.status(201).send(data)
-        }
-    })
-})
+//     Comments.create(dbComment, (err ,data)=>{
+//         if(err){
+//             res.status(500).send(err)
+//         }else{
+//             res.status(201).send(data)
+//         }
+//     })
+// })
 ////////////////////////////////////////////////////////////////////
 
 server.listen(4000, function() {
