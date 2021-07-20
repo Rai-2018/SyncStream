@@ -16,17 +16,23 @@ var master = {}
 const app = express();
 const Role = db.role;
 const server = httpserver.createServer(app)
-const io = require('socket.io')(server,{
-  cors:{
-      origin:'*',
-  }
-})
+// const io = require('socket.io')(server,{
+//   cors:{
+//       origin:'*',
+//   }
+// })
 
-// const io = socketIO(server);
-// var corsOptions = { origin: "*" };
+var corsOptions={
+  cors: true,
+  origins:["http://localhost:3000"],
+ }
+ const io = socketIO(server, corsOptions);
+
+//const io = socketIO(server);
+//var corsOptions = { origin: "*" };
 
 app.use(morgan('dev'));
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -91,8 +97,6 @@ io.on('connection', function(socket) {
   const room_id = url.parse(requrl, true).query.roomid;
   socket.join(room_id);
   console.log("Opening new connection: room_id: " + room_id);
-
-  console.log("Connected!");
 
   socket.on('newmessage',msg => {
       console.log('Message received: ', msg)
