@@ -11,8 +11,10 @@ class VideoPlayer extends React.Component {
         this.ProcessCommand = this.ProcessCommand.bind(this)
         this.synctime = this.synctime.bind(this)
         this.state = {
-          user_id: (parseInt(Math.random() * 100))% 10, 
-          room_id: (parseInt(Math.random() * 100))% 2,
+          // user_id: (parseInt(Math.random() * 100))% 10, 
+          // room_id: (parseInt(Math.random() * 100))% 2,
+          user_id: 0,
+          room_id: 0,
           start: false
         }
         console.log( "room_id: " + this.state['room_id'])
