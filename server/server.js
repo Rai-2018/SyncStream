@@ -4,8 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
-const Pusher = require("pusher")
-
+const Msg = require('./models/chat');
 
 var httpserver = require('http');
 var socketIO = require('socket.io')
@@ -17,8 +16,20 @@ var master = {}
 const app = express();
 const Role = db.role;
 const server = httpserver.createServer(app)
-const io = socketIO(server);
-var corsOptions = { origin: "*" };
+// const io = require('socket.io')(server,{
+//   cors:{
+//       origin:'*',
+//   }
+// })
+
+var corsOptions={
+  cors: true,
+  origins:["http://localhost:3000"],
+ }
+ const io = socketIO(server, corsOptions);
+
+//const io = socketIO(server);
+//var corsOptions = { origin: "*" };
 
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
@@ -87,6 +98,15 @@ io.on('connection', function(socket) {
   socket.join(room_id);
   console.log("Opening new connection: room_id: " + room_id);
 
+  socket.on('newmessage',msg => {
+      console.log('Message received: ', msg)
+      io.emit('newmessage',msg)
+  });
+
+  socket.on('disconnect', function(){
+    console.log("use disconected")
+});
+
   socket.on('message', function(message) {
     const obj = JSON.parse(message)
     var action = obj.action
@@ -115,44 +135,6 @@ io.on('connection', function(socket) {
   });
 });
 
-////////////////////////////////////////////////////////////////////
-
-// const database = mongoose.connection
-// database.once('open', ()=>{
-//     console.log("database is connected")
-
-//     const chatCollection = database.collection("SyncStream");
-//     const changeStream = chatCollection.watch();
-
-    // changeStream.on('change', (change)=>{
-    //     console.log(change);
-
-        // // put all data in fullDocuments in comment
-        // if(change.operationType === 'insert'){
-        //     const commentDetails = change.fullDocument;
-        //     pusher.trigger('chats', 'inserted', {
-        //         user_name: commentDetails.user_name,
-        //         comment: commentDetails.comment,
-        //         timestamp: commentDetails.timestamp,
-        //         received: commentDetails.received,
-        //     });
-        // }else{
-        //     console.log('Error triggering Pusher');
-        // }
-
-    // });
-// })
-
-// const Comments = db.comments
-
-// const ncomm = new Comments({
-//     comment: "DF",
-//     user_name: "DSFSDF",
-//     timestamp: "SDFSDFSDF",
-//     received: true
-// })
-
-// ncomm.save()
 
 // app.get('/comments/sync', (req, res) => {
 //     Comments.find((err ,data)=>{

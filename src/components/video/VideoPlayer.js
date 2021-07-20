@@ -12,13 +12,12 @@ class VideoPlayer extends React.Component {
         this.synctime = this.synctime.bind(this)
         this.state = {
           user_id: (parseInt(Math.random() * 100))% 10, 
-          room_id: 0,
+          room_id: (parseInt(Math.random() * 100))% 2,
           start: false
         }
         console.log( "room_id: " + this.state['room_id'])
         console.log( "user_id: " + this.state['user_id'])
     }
-
 
     ProcessCommand(data){
       if(data === "play"){
@@ -46,7 +45,6 @@ class VideoPlayer extends React.Component {
             "action": "play",
         }));
       }
-      
     }
 
     componentDidMount() {
@@ -103,7 +101,6 @@ class VideoPlayer extends React.Component {
           });
 
         });
-
     }
 
     // destroy player on unmount
