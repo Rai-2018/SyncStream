@@ -83,7 +83,7 @@ const vpassword = value => {
     }
 };
 
-export default class Register2 extends Component {
+class Register2 extends Component {
     constructor(props) {
         super(props);
         this.handleRegister = this.handleRegister.bind(this);
@@ -151,14 +151,11 @@ export default class Register2 extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className="col-md-12">
-                <div className="card card-container">
-                    <img
-                        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                        alt="profile-img"
-                        className="profile-img-card" />
+            <Container component="main" maxWidth="xs" className={classes.container}>
+                <CssBaseline />
+                    <div className={classes.paper}>     
 
-                    <Form onSubmit={this.handleRegister} ref={c => { this.form=c; }}>
+                    <Form className={classes.Name} onSubmit={this.handleRegister} ref={c => { this.form=c; }}>
                         {!this.state.successful && (
                             <div>
                                 <div className="form-group">
@@ -175,6 +172,7 @@ export default class Register2 extends Component {
 
                                 <div className="form-group">
                                     <label htmlFor="email">Email</label>
+                                    
                                     <Input 
                                         type='text'
                                         className='form-control'
@@ -204,16 +202,19 @@ export default class Register2 extends Component {
                         )}
                         {this.state.message && (
                             <div className="form-group">
-                                <div className={this.state.successful?"alert alert-success":"alert alert danger"}>
+                                <Alert 
+                                    severity={this.state.successful?"success":"error"}>
                                     {this.state.message}
-                                </div>
+                                </Alert>
                             </div>
                         )}
                       <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
 
                     </Form>
                 </div>
-            </div>
+            </Container>
         );
     }
 }
+
+export default withStyles((theme)=>styles(theme))(Register2);
