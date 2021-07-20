@@ -30,9 +30,9 @@ class VideoPlayer extends React.Component {
         console.log("Processing: paused")
         this.player.pause()
 
-      // } else if (!isNaN(data) && !isNaN(parseFloat(data))){
-      //   console.log("Processing: skip")
-      //   this.player.currentTime(parseFloat(data)+0.1)
+      } else if (!isNaN(data) && !isNaN(parseFloat(data))){
+        console.log("Processing: skip")
+        this.player.currentTime(parseFloat(data)+0.1)
 
       } else if (data  === "new") {
         console.log("Processing: new requester")
@@ -88,13 +88,13 @@ class VideoPlayer extends React.Component {
                     "action":"play"
                 }));
             });
-          // this.on('seeked', function(event) {
-          //       socket.send(JSON.stringify(
-          //         {
-          //           "action": "skip",
-          //           "time": this.currentTime()
-          //       }));
-          //   });
+          this.on('seeked', function(event) {
+                socket.send(JSON.stringify(
+                  {
+                    "action": "skip",
+                    "time": this.currentTime()
+                }));
+            });
           this.bigPlayButton.on('click', function(){
                 socket.send(JSON.stringify(
                   {
