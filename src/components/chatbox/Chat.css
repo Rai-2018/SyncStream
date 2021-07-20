@@ -79,6 +79,10 @@
     border-color: lightsalmon;
     border-width: 0.3px;
     outline-style: none;
+
+/* word-wrap:break-word; 
+word-break:break-all; 
+overflow: hidden; */
   }
   
   .button{

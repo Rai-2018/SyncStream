@@ -8,7 +8,7 @@ function App() {
   const [chat, setChat] = useState([])
 
   useEffect(() => {
-    socket.on('message', msg => {
+    socket.on('newmessage', msg => {
       setChat([...chat, msg])
     })
   })
@@ -16,7 +16,7 @@ function App() {
   const sendMessage = (e) => {
     e.preventDefault();
     console.log(message)
-    socket.emit('message', { userName, message })
+    socket.emit('newmessage', { userName, message })
     setMessage('')
   };
 
@@ -50,7 +50,7 @@ function App() {
 
           <div className="chat_footer">
             <form onSubmit={sendMessage}>
-              <input type="text" name="message"
+              <input type="text" name="newmessage"
                 placeholder='Type message'
                 value={message}
                 onChange={(e) => { setMessage(e.target.value) }}
