@@ -1,6 +1,6 @@
 const mongoose =require('mongoose');
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
@@ -22,19 +22,12 @@ var corsOptions = { origin: "*" };
 
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/video", express.static(__dirname))
 app.use(express.json());
-
-const pusher = new Pusher({
-    appId: "1234099",
-    key: "5391b962e408f216b9b0",
-    secret: "a8ea476c010edc52fb6d",
-    cluster: "us3",
-    useTLS: true
-  });
-
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use("/video", express.static(__dirname));
+require("./routes/uploadvideo")(app);
 
 
 db.mongoose.connect(

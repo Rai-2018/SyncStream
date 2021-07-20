@@ -59,11 +59,7 @@ class UploadVideo extends React.Component {
     fileUploadHandler = (event) => {
         const data = new FormData();
         data.append('file', this.state.selectedVideo[0]);
-        axios.post('http://127.0.0.1:3000/api/upload', data, {
-            headers: {
-            'Content-Type': 'application/json'
-            }
-        }, {
+        axios.post('http://127.0.0.1:4000/api/video', data, {
                 onUploadProgress: ProgressEvent => {
                 this.setState({
                     loaded: (ProgressEvent.loaded / ProgressEvent.total * 100)
@@ -85,7 +81,7 @@ class UploadVideo extends React.Component {
               </div>
               <h4>Upload Your Video</h4>
               <hr className="my-4" />  
-              <form method="post" name="videoUpload" action="/api/upload" id="#" encType="multipart/form-data">
+              <form method="post" name="videoUpload" action="/api/video" id="#" encType="multipart/form-data">
                 <div className="form-group files">
                   <input
                     type="file"
