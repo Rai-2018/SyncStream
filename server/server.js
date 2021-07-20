@@ -1,6 +1,6 @@
 const mongoose =require('mongoose');
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
@@ -33,12 +33,12 @@ var corsOptions={
 
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/video", express.static(__dirname))
 app.use(express.json());
-
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use("/video", express.static(__dirname));
+require("./routes/uploadvideo")(app);
 
 
 db.mongoose.connect(
