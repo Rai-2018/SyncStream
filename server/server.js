@@ -1,6 +1,6 @@
 const mongoose =require('mongoose');
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
@@ -16,16 +16,29 @@ var master = {}
 const app = express();
 const Role = db.role;
 const server = httpserver.createServer(app)
-const io = socketIO(server);
-var corsOptions = { origin: "*" };
+// const io = require('socket.io')(server,{
+//   cors:{
+//       origin:'*',
+//   }
+// })
+
+var corsOptions={
+  cors: true,
+  origins:["http://localhost:3000"],
+ }
+ const io = socketIO(server, corsOptions);
+
+//const io = socketIO(server);
+//var corsOptions = { origin: "*" };
 
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/video", express.static(__dirname))
 app.use(express.json());
-
+app.use(express.urlencoded({
+  extended: true
+}));
+app.use("/video", express.static(__dirname));
+require("./routes/uploadvideo")(app);
 
 
 db.mongoose.connect(
@@ -80,83 +93,64 @@ function initial() {
 ////////////////////////////////////////////////////////////////////
 
 io.on('connection', function(socket) {
-  const requrl = socket.handshake.url
-  const room_id = url.parse(requrl, true).query.roomid;
-  socket.join(room_id);
-  console.log("Opening new connection: room_id: " + room_id);
+    const requrl = socket.handshake.url
+    const room_id = url.parse(requrl, true).query.roomid;
+    socket.join(room_id);
+    console.log("Opening new connection: room_id: " + room_id);
 
-  socket.on('newmessage',msg => {
+    socket.on('newmessage',msg => {
       console.log('Message received: ', msg)
       io.emit('newmessage',msg)
-  });
+    });
 
+    socket.on('disconnect', function(){
+        console.log("use disconected")
+    });
 
-  socket.on('message', function(message) {
-    const obj = JSON.parse(message)
-    var action = obj.action
-    console.log("Sending action: " + action);
+    socket.on('message', function(message) {
+        const obj = JSON.parse(message)
+        var action = obj.action
+        
 
-    if(action === "connect"){
-      if(master[room_id] == null){
-        console.log("Room: " + room_id + " | master: " + obj.user_id);
-        master[room_id] = socket;
-      } 
+        if(action === "connect"){
+          if(master[room_id] == null){
+            console.log("Sending action: connect");
+            console.log("Room: " + room_id + " | master: " + obj.user_id);
+            master[room_id] = socket;
+          } 
 
-    } else if(action === "skip"){
-      var date = Date.now();
-      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.01){
-        lasttime = date
-        socket.broadcast.to(room_id).emit('message',obj.time);
-      }
+        } else if(action === "skip"){
+          var date = Date.now();
+          if (Math.floor(date/1000) > Math.floor(lastskip/1000) + 0.01){
+            console.log("Sending action: skip");
+            lastskip = date
+            socket.broadcast.to(room_id).emit('message',obj.time);
+          }
 
-    } else if (action === "request"){
-      var socketid = master[room_id].id
-      socket.broadcast.to(socketid).emit('message',"new");
+        } else if (action === "request"){
+          console.log("Sending action: request");
+          var socketid = master[room_id].id
+          socket.broadcast.to(socketid).emit('message',"new");
 
-    } else {
-      socket.broadcast.to(room_id).emit('message',obj.action);
-    }
+        } else if (action === "play") {
+            var play = Date.now();
+            if (Math.floor(play/1000) > Math.floor(lastplay/1000) + 0.01){
+                console.log("Sending action: "+ action);
+                lastplay = play;
+                socket.broadcast.to(room_id).emit('message',obj.action);
+            }
+        } else if (action === "paused") {
+            var pause = Date.now();
+            if (Math.floor(pause/1000) > Math.floor(lastpause/1000) + 0.01){
+                console.log("Sending action: "+ action);
+                lastpause = pause;
+                socket.broadcast.to(room_id).emit('message',obj.action);
+            }
+
+        }
   });
 });
 
-////////////////////////////////////////////////////////////////////
-
-// const database = mongoose.connection
-// database.once('open', ()=>{
-//     console.log("database is connected")
-
-//     const chatCollection = database.collection("SyncStream");
-//     const changeStream = chatCollection.watch();
-
-    // changeStream.on('change', (change)=>{
-    //     console.log(change);
-
-        // // put all data in fullDocuments in comment
-        // if(change.operationType === 'insert'){
-        //     const commentDetails = change.fullDocument;
-        //     pusher.trigger('chats', 'inserted', {
-        //         user_name: commentDetails.user_name,
-        //         comment: commentDetails.comment,
-        //         timestamp: commentDetails.timestamp,
-        //         received: commentDetails.received,
-        //     });
-        // }else{
-        //     console.log('Error triggering Pusher');
-        // }
-
-    // });
-// })
-
-// const Comments = db.comments
-
-// const ncomm = new Comments({
-//     comment: "DF",
-//     user_name: "DSFSDF",
-//     timestamp: "SDFSDFSDF",
-//     received: true
-// })
-
-// ncomm.save()
 
 // app.get('/comments/sync', (req, res) => {
 //     Comments.find((err ,data)=>{
