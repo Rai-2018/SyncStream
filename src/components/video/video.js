@@ -8,7 +8,7 @@ class Player extends React.Component {
           loadingSpinner: true,
           bigPlayButton: true,
           sources: [{
-            src: 'http://localhost:4000/video/a.mp4',
+            src: 'http://34.152.45.178:4000/video/a.mp4',
             type: 'video/mp4',
             fluid: true,
             fill:true,

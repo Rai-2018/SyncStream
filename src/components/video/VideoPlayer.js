@@ -48,7 +48,7 @@ class VideoPlayer extends React.Component {
 
     componentDidMount() {
 
-        const ws_url = 'http://localhost:4000/?roomid=' + this.state['room_id']
+        const ws_url = 'http://34.152.45.178:4000/?roomid=' + this.state['room_id']
         const socket = io.connect(ws_url, {transports: ['websocket'], secure: true, reconnection: false, rejectUnauthorized: false });
         this.socket = socket
         socket.on('connect', () => {
