@@ -16,7 +16,7 @@ import PropTypes from 'prop-types'
 import Form from "react-validation/build/form";
 import Alert from '@material-ui/lab/Alert';
 
-import AuthService from "../services/auth-service";
+import AuthService from "../../services/auth-service";
 import CheckButton from "react-validation/build/button";
 
 function Copyright() {

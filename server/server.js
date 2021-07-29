@@ -9,7 +9,9 @@ const Msg = require('./models/chat');
 var httpserver = require('http');
 var socketIO = require('socket.io')
 var url = require('url');
-var lasttime = 0;
+var lastplay = 0;
+var lastpause = 0;
+var lastskip = 0;
 var master = {}
 
 
@@ -24,7 +26,7 @@ const server = httpserver.createServer(app)
 
 var corsOptions={
   cors: true,
-  origins:["http://localhost:3000"],
+  origins: '*',
  }
  const io = socketIO(server, corsOptions);
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AuthService from "../services/auth-service";
+import AuthService from "../../services/auth-service";
 import {Redirect} from 'react-router';
 
 export default class Profile extends Component {
