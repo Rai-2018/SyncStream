@@ -93,45 +93,61 @@ function initial() {
 ////////////////////////////////////////////////////////////////////
 
 io.on('connection', function(socket) {
-  const requrl = socket.handshake.url
-  const room_id = url.parse(requrl, true).query.roomid;
-  socket.join(room_id);
-  console.log("Opening new connection: room_id: " + room_id);
+    const requrl = socket.handshake.url
+    const room_id = url.parse(requrl, true).query.roomid;
+    socket.join(room_id);
+    console.log("Opening new connection: room_id: " + room_id);
 
-  socket.on('newmessage',msg => {
+    socket.on('newmessage',msg => {
       console.log('Message received: ', msg)
       io.emit('newmessage',msg)
-  });
+    });
 
-  socket.on('disconnect', function(){
-    console.log("use disconected")
-});
+    socket.on('disconnect', function(){
+        console.log("use disconected")
+    });
 
-  socket.on('message', function(message) {
-    const obj = JSON.parse(message)
-    var action = obj.action
-    console.log("Sending action: " + action);
+    socket.on('message', function(message) {
+        const obj = JSON.parse(message)
+        var action = obj.action
+        
 
-    if(action === "connect"){
-      if(master[room_id] == null){
-        console.log("Room: " + room_id + " | master: " + obj.user_id);
-        master[room_id] = socket;
-      } 
+        if(action === "connect"){
+          if(master[room_id] == null){
+            console.log("Sending action: connect");
+            console.log("Room: " + room_id + " | master: " + obj.user_id);
+            master[room_id] = socket;
+          } 
 
-    } else if(action === "skip"){
-      var date = Date.now();
-      if (Math.floor(date/1000) > Math.floor(lasttime/1000) + 0.01){
-        lasttime = date
-        socket.broadcast.to(room_id).emit('message',obj.time);
-      }
+        } else if(action === "skip"){
+          var date = Date.now();
+          if (Math.floor(date/1000) > Math.floor(lastskip/1000) + 0.01){
+            console.log("Sending action: skip");
+            lastskip = date
+            socket.broadcast.to(room_id).emit('message',obj.time);
+          }
 
-    } else if (action === "request"){
-      var socketid = master[room_id].id
-      socket.broadcast.to(socketid).emit('message',"new");
+        } else if (action === "request"){
+          console.log("Sending action: request");
+          var socketid = master[room_id].id
+          socket.broadcast.to(socketid).emit('message',"new");
 
-    } else {
-      socket.broadcast.to(room_id).emit('message',obj.action);
-    }
+        } else if (action === "play") {
+            var play = Date.now();
+            if (Math.floor(play/1000) > Math.floor(lastplay/1000) + 0.01){
+                console.log("Sending action: "+ action);
+                lastplay = play;
+                socket.broadcast.to(room_id).emit('message',obj.action);
+            }
+        } else if (action === "paused") {
+            var pause = Date.now();
+            if (Math.floor(pause/1000) > Math.floor(lastpause/1000) + 0.01){
+                console.log("Sending action: "+ action);
+                lastpause = pause;
+                socket.broadcast.to(room_id).emit('message',obj.action);
+            }
+
+        }
   });
 });
 

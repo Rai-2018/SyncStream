@@ -11,8 +11,10 @@ class VideoPlayer extends React.Component {
         this.ProcessCommand = this.ProcessCommand.bind(this)
         this.synctime = this.synctime.bind(this)
         this.state = {
-          user_id: (parseInt(Math.random() * 100))% 10, 
-          room_id: (parseInt(Math.random() * 100))% 2,
+          // user_id: (parseInt(Math.random() * 100))% 10, 
+          // room_id: (parseInt(Math.random() * 100))% 2,
+          user_id: 0,
+          room_id: 0,
           start: false
         }
         console.log( "room_id: " + this.state['room_id'])
@@ -23,15 +25,12 @@ class VideoPlayer extends React.Component {
       if(data === "play"){
         console.log("Processing: play")
         this.player.play()
-
       } else if (data === 'paused'){
         console.log("Processing: paused")
         this.player.pause()
-
       } else if (!isNaN(data) && !isNaN(parseFloat(data))){
         console.log("Processing: skip")
         this.player.currentTime(parseFloat(data)+0.1)
-
       } else if (data  === "new") {
         console.log("Processing: new requester")
         this.socket.send(JSON.stringify(
@@ -68,6 +67,7 @@ class VideoPlayer extends React.Component {
 
 
         socket.on('message', (event) => {
+
             if(event != null) {
               this.ProcessCommand(event);
             }
@@ -75,18 +75,21 @@ class VideoPlayer extends React.Component {
         
         this.player = videojs(this.videoNode, this.props, function () {
           this.on('pause', function(event) {
+                console.log("paused")
                 socket.send(JSON.stringify(
                   {
                     "action":"paused"
                 }));
             });
           this.on('play', function(event) {
+                console.log("play")
                 socket.send(JSON.stringify(
                   {
                     "action":"play"
                 }));
             });
-          this.on('seeked', function(event) {
+          this.on('seeking', function(event) {
+                console.log("seeking")
                 socket.send(JSON.stringify(
                   {
                     "action": "skip",
@@ -94,6 +97,7 @@ class VideoPlayer extends React.Component {
                 }));
             });
           this.bigPlayButton.on('click', function(){
+                console.log("click")
                 socket.send(JSON.stringify(
                   {
                     "action":"play"
