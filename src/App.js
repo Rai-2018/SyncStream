@@ -4,18 +4,21 @@ import { withStyles } from '@material-ui/styles';
 
 
 import AuthService from './services/auth-service';
-import Login from './components/login';
-import Register from './components/register';
-import Home from './components/home';
-import Profile from './components/profile';
-import BoardUser from './components/board-user';
-import BoardModerator from './components/board-moderator';
-import BoardAdmin from './components/board-admin';
+
+import Login from './components/register/login';
+import Register from './components/register/register';
+import Home from './components/register/home';
+import Profile from './components/register/profile';
+import BoardUser from './components/register/board-user';
+import BoardModerator from './components/register/board-moderator';
+import BoardAdmin from './components/register/board-admin';
+import SignIn from './components/register/loginr';
+
 import {Player as VideoPlayer} from './components/video/video';
+
 import Upload from './components/upload/upload';
 import Chatbox from './components/chatbox/Chat';
 import Main from './components/main/main';
-import SignIn from './components/loginr';
 
 import green from '@material-ui/core/colors/green';
 import AppBar from "@material-ui/core/AppBar"
