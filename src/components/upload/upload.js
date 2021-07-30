@@ -37,7 +37,7 @@ class UploadVideo extends React.Component {
 
     oneFile = event => {
         var files = event.target.files;
-        if(files.length != 1){
+        if(files.length !== 1){
             toast.error("Please only submit one file");
             event.target.value = null;
             return false;
@@ -59,7 +59,7 @@ class UploadVideo extends React.Component {
     fileUploadHandler = (event) => {
         const data = new FormData();
         data.append('file', this.state.selectedVideo[0]);
-        axios.post('http://' + `${process.env.REACT_APP_URL}` + ':4000/api/video', data, {
+        axios.post(`http://${process.env.REACT_APP_URL}:4000/api/video`, data, {
                 onUploadProgress: ProgressEvent => {
                 this.setState({
                     loaded: (ProgressEvent.loaded / ProgressEvent.total * 100)

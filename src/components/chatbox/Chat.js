@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import "./Chat.css";
 import Avatar from '@material-ui/core/Avatar';
 
-const socket = io('http://' + `${process.env.REACT_APP_URL}` + ':4000')
+const socket = io(`http://${process.env.REACT_APP_URL}:4000`)
 const userName = 'User ' + parseInt(Math.random() * 3)
 function App() {
   const [message, setMessage] = useState('')
