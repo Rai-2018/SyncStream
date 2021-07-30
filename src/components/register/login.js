@@ -1,11 +1,42 @@
-import React from "react";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { withStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import PropTypes from 'prop-types'
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
+import Alert from '@material-ui/lab/Alert';
 
 import AuthService from "../../services/auth-service";
-// import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import './login.css';
+import CheckButton from "react-validation/build/button";
+
+
+const styles = (theme) => ({
+  paper: {
+    marginTop: theme.spacing(5),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  container: {
+    marginTop: theme.spacing(1),
+  }
+});
+
 
 const required = value => {
     if(!value) {
@@ -17,7 +48,7 @@ const required = value => {
     }
 };
 
-export default class Login extends React.Component {
+class SignIn extends React.Component {
     constructor(props) {
         super(props);
         this.handleLogin = this.handleLogin.bind(this);
@@ -59,7 +90,7 @@ export default class Login extends React.Component {
             )
             .then(
                 () => {
-                    this.props.history.push("/profile");
+                    this.props.history.push("/create");
                     window.location.reload();
                 },
                 error => {
@@ -77,58 +108,79 @@ export default class Login extends React.Component {
         }
     }
 
-    render() {
-        return (
-            <div className="col-md-12">
-                <div className="card card-container">
-                    <img
-                        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                        alt="profile-img"
-                        className="profile-img-card" />
+  render(){
+    const { classes } = this.props;
+    return (
+      <Container component="main" maxWidth="xs" className={classes.container}>
+        <CssBaseline />
+        <div className={classes.paper}>
+  
+          <Form className={classes.form} onSubmit={this.handleLogin} ref={c => { this.form=c; }}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              value={this.state.username}
+              onChange={this.onChangeUsername}
+              validations={[required]}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={this.state.password}
+              onChange={this.onChangePassword}
+              validations={[required]}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
 
-                    <Form onSubmit={this.handleLogin} ref={c => { this.form=c; }}>
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <Input 
-                                type='text'
-                                className='form-control'
-                                name='username'
-                                value={this.state.username}
-                                onChange={this.onChangeUsername}
-                                validations={[required]}
-                            />
-                        </div>
+          <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
+          {this.state.message && (
+              <div>
+                  <Alert severity="error">
+                      {this.state.message}
+                  </Alert>
+              </div>
+          )}          
 
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <Input 
-                                type='text'
-                                className='form-control'
-                                name='password'
-                                value={this.state.password}
-                                onChange={this.onChangePassword}
-                                validations={[required]}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <button className="btn btn-primary btn-block" disabled={this.state.loading}>
-                                {this.state.loading && ( <span className="spinner-boarder spinner-boarder-sm"></span>)}
-                                <span>Login</span>
-                            </button>
-                        </div>
-
-                        {this.state.message && (
-                            <div className="form-group">
-                                <div className="alert alert danger" role="alert">
-                                    {this.state.message}
-                                </div>
-                            </div>
-                        )}
-                        <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
-                    </Form>
-                </div>
-            </div>
-        );
-    }
+          </Form>
+        </div>
+      </Container>
+    );
+  }
 }
+
+// export default SignIn
+
+
+SignIn.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles((theme)=>styles(theme))(SignIn);
+
+// export default withStyles(useStyles)(SignIn)

@@ -114,12 +114,12 @@ io.on('connection', function(socket) {
         var action = obj.action
         
 
-        if(action === "connect"){
-          if(master[room_id] == null){
-            console.log("Sending action: connect");
-            console.log("Room: " + room_id + " | master: " + obj.user_id);
-            master[room_id] = socket;
-          } 
+        if(action === "connect"){ 
+            if(master[room_id] == null && room_id){
+                console.log("Sending action: connect");
+                console.log("Room: " + room_id + " | master: " + obj.user_id);
+                master[room_id] = socket;
+            } 
 
         } else if(action === "skip"){
           var date = Date.now();
