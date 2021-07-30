@@ -1,22 +1,14 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import AuthService from "../../services/auth-service";
 import { isEmail } from "validator";
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import { Button, FormControl, Input, InputLabel } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
 
@@ -155,49 +147,62 @@ class Register2 extends Component {
                 <CssBaseline />
                     <div className={classes.paper}>     
 
-                    <Form className={classes.Name} onSubmit={this.handleRegister} ref={c => { this.form=c; }}>
+                    <Form className={classes.form} onSubmit={this.handleRegister} ref={c => { this.form=c; }}>
                         {!this.state.successful && (
                             <div>
-                                <div className="form-group">
-                                    <label htmlFor="username">Username</label>
+                                <FormControl required fullWidth margin="normal">
+                                    <InputLabel htmlFor="username" className={classes.labels}>Username</InputLabel>
                                     <Input 
                                         type='text'
-                                        className='form-control'
+                                        className={classes.inputs}
                                         name='username'
-                                        value={this.state.username}
+                                        autoComplete="username"
+                                        // value={this.state.username}
                                         onChange={this.onChangeUsername}
                                         validations={[required, vusername]}
                                     />
-                                </div>
+                                </FormControl>
 
-                                <div className="form-group">
-                                    <label htmlFor="email">Email</label>
-                                    
+                                <FormControl required fullWidth margin="normal">
+                                    <InputLabel htmlFor="email" className={classes.labels}>Email</InputLabel>
                                     <Input 
-                                        type='text'
-                                        className='form-control'
                                         name='email'
-                                        value={this.state.email}
+                                        type='email'
+                                        autoComplete='email'
+                                        className='form-control'
+                                        disableUnderline={true}
+                                        // value={this.state.email}
+                                        className={classes.inputs}
                                         onChange={this.onChangeEmail}
                                         validations={[required, email]}
                                     />
-                                </div>
+                                </FormControl>
 
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
+                                <FormControl required fullWidth margin="normal">
+                                    <InputLabel htmlFor="password" className={classes.labels}>Password</InputLabel>
                                     <Input 
-                                        type='text'
-                                        className='form-control'
                                         name='password'
-                                        value={this.state.password}
+                                        type='password'
+                                        className={classes.inputs}
+                                        // value={this.state.password}
+                                        disabledUnderline={true}
                                         onChange={this.onChangePassword}
                                         validations={[required, vpassword]}
                                     />
-                                </div>
+                                </FormControl>
 
-                                <div className="form-group">
-                                    <button className="btn btn-primary btn-block">Sign Up</button>
-                                </div>
+                                
+                                <Button 
+                                    // className="btn btn-primary btn-block"
+                                    disableRipple
+                                    fullWidth
+                                    variant="outlined"
+                                    className={classes.button}
+                                    type="submit"
+                                >
+                                    Sign Up
+                                </Button>
+                                
                             </div>
                         )}
                         {this.state.message && (

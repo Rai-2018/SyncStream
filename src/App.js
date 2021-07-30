@@ -128,7 +128,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path={["/", "/home"]} component={SignIn} />
             <Route exact path={"/login"} component={SignIn} />
-            <Route exact path={"/register"} component={Register2} />
+            <Route exact path={"/register"} component={Register} />
             <Route exact path={"/profile"} component={Profile} />
             <Route exact path={"/create"} component={CreateRoom} />
             <Route exact path={"/user"} component={BoardUser} />
