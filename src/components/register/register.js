@@ -94,11 +94,10 @@ class Register2 extends Component {
     }
     
     onChangeUsername(e) {
-        const uname = e.target.value;
         if(e.target.value.length < 3 || e.target.value.length > 20) {
-            this.setState({
-                successful: false,
-                message: "Username must be between 3-20 characters."
+            e.preventDefault();
+            this.setState({                
+                message: "Username must be between 4-20 characters."
             });
         }else {
             this.setState({
@@ -109,8 +108,8 @@ class Register2 extends Component {
     }
     onChangeEmail(e) {
         if(!isEmail(e.target.value)) {
+            e.preventDefault();
             this.setState({
-                successful: false,
                 message: "This is not a valid email!"
             });
         } else {
@@ -122,11 +121,11 @@ class Register2 extends Component {
     }
     onChangePassword(e) {
         if(e.target.value.length < 3 || e.target.value.length > 20) {
+            e.preventDefault();
             this.setState({
-                successful: false,
                 message: "Password must be between 6 and 40 characters."
             });
-        }else {
+        } else {
             this.setState({
                 password: e.target.value
             });
@@ -138,7 +137,7 @@ class Register2 extends Component {
         console.log("registering");
         this.setState({
             message: "",
-            successful: false
+            successful: false,            
         });
         this.form.validateAll();
         if(this.checkBtn.context._errors.length === 0) {
@@ -164,6 +163,7 @@ class Register2 extends Component {
                 }
             );
         }
+        
     }
 
     render() {
@@ -179,7 +179,6 @@ class Register2 extends Component {
                                 <FormControl outlined required fullWidth margin="normal">
                                     <InputLabel outlined htmlFor="username" className={classes.labels}>Username</InputLabel>
                                     <Input 
-                                        label="Username"
                                         type='text'
                                         className={classes.inputs}
                                         name='username'
@@ -187,7 +186,7 @@ class Register2 extends Component {
                                         // placeholder={this.state.message}
                                         // value={this.state.username}
                                         onChange={this.onChangeUsername}
-                                        // validators={[required, vusername]}
+                                        // validations={[required, vusername]}
                                         // errorMessages={'this field is required', 'username not valid'}
                                         
                                         // 
@@ -204,7 +203,7 @@ class Register2 extends Component {
                                         
                                         className={classes.inputs}
                                         onChange={this.onChangeEmail}
-                                        validations={[required, email]}
+                                        // validations={[required, email]}
                                     />
                                 </FormControl>
 
@@ -216,9 +215,9 @@ class Register2 extends Component {
                                         className={classes.inputs}
                                         // value={this.state.password}
                                         
-                                        disabledUnderline={true}
+                                        // disabledUnderline={true}
                                         onChange={this.onChangePassword}
-                                        validations={[required, vpassword]}
+                                        // validations={[required, vpassword]}
                                     />
                                 </FormControl>
 
@@ -243,7 +242,7 @@ class Register2 extends Component {
                                     {this.state.message}
                                 </Alert>
                             </div>
-                        )}
+                        )}                     
                       <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
 
                     </Form>
