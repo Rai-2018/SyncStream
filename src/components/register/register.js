@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
-
+import { ValidatorForm } from "react-material-ui-form-validator";
 import AuthService from "../../services/auth-service";
 import { isEmail } from "validator";
 import Avatar from '@material-ui/core/Avatar';
-import { Button, FormControl, Input, InputLabel } from '@material-ui/core';
+import { Button, FormControl, Input, InputLabel, OutlinedInput } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
+import { TextValidator, ValidatorComponent } from "react-material-ui-form-validator";
 
 const styles = (theme) => ({
     paper: {
@@ -82,7 +83,7 @@ class Register2 extends Component {
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
-
+        
         this.state = {
             username: "",
             email: "",
@@ -91,21 +92,46 @@ class Register2 extends Component {
             message: "",
         };
     }
-
+    
     onChangeUsername(e) {
-        this.setState({
-            username: e.target.value
-        });
+        const uname = e.target.value;
+        if(e.target.value.length < 3 || e.target.value.length > 20) {
+            this.setState({
+                successful: false,
+                message: "Username must be between 3-20 characters."
+            });
+        }else {
+            this.setState({
+                username: e.target.value
+            });
+        }   
+           
     }
     onChangeEmail(e) {
-        this.setState({
-            email: e.target.value
-        });
+        if(!isEmail(e.target.value)) {
+            this.setState({
+                successful: false,
+                message: "This is not a valid email!"
+            });
+        } else {
+            this.setState({
+                email: e.target.value
+            });
+        }
+        
     }
     onChangePassword(e) {
-        this.setState({
-            password: e.target.value
-        });
+        if(e.target.value.length < 3 || e.target.value.length > 20) {
+            this.setState({
+                successful: false,
+                message: "Password must be between 6 and 40 characters."
+            });
+        }else {
+            this.setState({
+                password: e.target.value
+            });
+        }
+        
     }
     handleRegister(e) {
         e.preventDefault();
@@ -150,16 +176,21 @@ class Register2 extends Component {
                     <Form className={classes.form} onSubmit={this.handleRegister} ref={c => { this.form=c; }}>
                         {!this.state.successful && (
                             <div>
-                                <FormControl required fullWidth margin="normal">
-                                    <InputLabel htmlFor="username" className={classes.labels}>Username</InputLabel>
+                                <FormControl outlined required fullWidth margin="normal">
+                                    <InputLabel outlined htmlFor="username" className={classes.labels}>Username</InputLabel>
                                     <Input 
+                                        label="Username"
                                         type='text'
                                         className={classes.inputs}
                                         name='username'
                                         autoComplete="username"
+                                        // placeholder={this.state.message}
                                         // value={this.state.username}
                                         onChange={this.onChangeUsername}
-                                        validations={[required, vusername]}
+                                        // validators={[required, vusername]}
+                                        // errorMessages={'this field is required', 'username not valid'}
+                                        
+                                        // 
                                     />
                                 </FormControl>
 
@@ -169,9 +200,8 @@ class Register2 extends Component {
                                         name='email'
                                         type='email'
                                         autoComplete='email'
-                                        className='form-control'
-                                        disableUnderline={true}
                                         // value={this.state.email}
+                                        
                                         className={classes.inputs}
                                         onChange={this.onChangeEmail}
                                         validations={[required, email]}
@@ -185,6 +215,7 @@ class Register2 extends Component {
                                         type='password'
                                         className={classes.inputs}
                                         // value={this.state.password}
+                                        
                                         disabledUnderline={true}
                                         onChange={this.onChangePassword}
                                         validations={[required, vpassword]}
@@ -216,6 +247,7 @@ class Register2 extends Component {
                       <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
 
                     </Form>
+                    
                 </div>
             </Container>
         );
