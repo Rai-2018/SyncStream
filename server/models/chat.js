@@ -1,16 +1,12 @@
 const mongoose =require('mongoose');
 // define data schema
-
-const Chat = mongoose.model(
+const Msg = mongoose.model(
     "Chat",
     new mongoose.Schema({
-        comment: String,
-        user_name: String,
-        timestamp: String,
-        received: Boolean,
-    })
+        userName: String,
+        message: String,
+})
 );
-
-
 //data collection 
-module.exports = Chat
+// const Msg = mongoose.model('msg',Chat);
+module.exports = Msg
