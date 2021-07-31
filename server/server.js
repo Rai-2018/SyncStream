@@ -13,7 +13,7 @@ var lastplay = 0;
 var lastpause = 0;
 var lastskip = 0;
 var master = {}
-
+var mod = {}
 const app = express();
 const Role = db.role;
 const server = httpserver.createServer(app)
@@ -90,41 +90,33 @@ io.on('connection', function(socket) {
     const requrl = socket.handshake.url
     const room_id = url.parse(requrl, true).query.roomid;
     socket.join(room_id);
-    console.log("Opening new connection: room_id: " + room_id);
 
     socket.on('newmessage',msg => {
       console.log('Message received: ', msg)
       io.emit('newmessage',msg)
     });
 
-    socket.on('disconnect', function(){
-        console.log("use disconected")
-    });
-
     socket.on('message', function(message) {
         const obj = JSON.parse(message)
-        var action = obj.action
-
+        var action = obj.action;
         if(action === "connect"){ 
-            if(master[room_id] == null && room_id){
-                console.log("Sending action: connect");
+            if(mod[room_id] == null && room_id){
                 console.log("Room: " + room_id + " | master: " + obj.user_id);
-                master[room_id] = socket;
+                mod[room_id] = obj.user_id;
+                master[obj.user_id] = socket;
             } 
-
         } else if(action === "skip"){
           var date = Date.now();
           if (Math.floor(date/1000) > Math.floor(lastskip/1000) + 0.01){
-            console.log("Sending action: skip");
             lastskip = date
             socket.broadcast.to(room_id).emit('message',obj.time);
           }
-
         } else if (action === "request"){
-          console.log("Sending action: request");
-          var socketid = master[room_id].id
+          var user_id = mod[room_id];
+          console.log(user_id)
+          // console.log(master)
+          var socketid = master[user_id].id
           socket.broadcast.to(socketid).emit('message',"new");
-
         } else if (action === "play") {
             var play = Date.now();
             if (Math.floor(play/1000) > Math.floor(lastplay/1000) + 0.01){
@@ -139,7 +131,8 @@ io.on('connection', function(socket) {
                 lastpause = pause;
                 socket.broadcast.to(room_id).emit('message',obj.action);
             }
-
+        } else if (action === 'url') {
+            socket.broadcast.to(room_id).emit('message',obj.url);
         }
   });
 });

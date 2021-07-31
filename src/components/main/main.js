@@ -32,7 +32,7 @@ class Main extends Component {
             currentUser: {username: ""},
             room_id: 0,
             roomReady: false,
-            shared_var: null,
+            shared_var: `http://${process.env.REACT_APP_URL}:4000/video/default.mp4`,
             changed: 0
       };
     }
@@ -74,7 +74,7 @@ class Main extends Component {
                         </Grid>
                         <Grid item xs={4}>
                         <Paper className={classes.paper}>
-                            <Chatbox />
+                            
                         </Paper>
                         </Grid>
                     </Grid> 
