@@ -99,12 +99,16 @@ io.on('connection', function(socket) {
     socket.on('message', function(message) {
         const obj = JSON.parse(message)
         var action = obj.action;
-        if(action === "connect"){ 
-            if(mod[room_id] == null && room_id){
-                console.log("Room: " + room_id + " | master: " + obj.user_id);
-                mod[room_id] = obj.user_id;
-                master[obj.user_id] = socket;
-            } 
+        if(action === "connect"){
+            db.Room.find({room_id: room_id}, (err, role) => {
+                if(role[0]){
+                    if(obj.user_id == role[0].userName && room_id){
+                        console.log("Room: " + room_id + " | master: " + obj.user_id);
+                        mod[room_id] = obj.user_id;
+                        master[obj.user_id] = socket;
+                    } 
+                } 
+            })
         } else if(action === "skip"){
           var date = Date.now();
           if (Math.floor(date/1000) > Math.floor(lastskip/1000) + 0.01){
