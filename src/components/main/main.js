@@ -74,7 +74,7 @@ class Main extends Component {
                         </Grid>
                         <Grid item xs={4}>
                         <Paper className={classes.paper}>
-                            
+                            <Chatbox />
                         </Paper>
                         </Grid>
                     </Grid> 
