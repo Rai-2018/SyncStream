@@ -98,8 +98,18 @@ exports.signin = (req, res) => {
     });
 };
 
-// exports.deleteUser = async(req,res,next)=>{
-//     try{
-//         const userID = req.
-//     }
-// }
+exports.getAllUser = (req, res) => {
+    User.find({}, (err,res) => {
+        var userMap = {};
+        users.forEach(function(user) {
+            userMap[user._id] = user;
+        });
+        if(err) {
+            console.log('did not get all user');
+            return res.status(404).send({ message: "cannot find user" });
+        }
+
+        res.render('/allusers',userMap);
+    })
+}
+

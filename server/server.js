@@ -27,8 +27,8 @@ var corsOptions={
 
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({
+app.use(json());
+app.use(urlencoded({
   extended: true
 }));
 app.use("/video", express.static(__dirname));
