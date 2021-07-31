@@ -32,6 +32,7 @@ class Player extends React.Component {
           controls: false,
           loadingSpinner: true,
           bigPlayButton: true,
+          preload:"none",
           sources: [{
             src: src_url,
             type: 'video/mp4',

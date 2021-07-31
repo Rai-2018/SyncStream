@@ -36,3 +36,21 @@ exports.joinroom = (req, res) => {
     })
     
 }
+
+
+
+exports.check = (req, res) => {
+    Room.find({room_id: req.body.room_id}, (err, role) => {
+        if(err){
+            console.log("1--");
+            return res.status(500).send({ message: "nonexist" });
+        }
+
+        if(!role[0]){
+            return res.status(200).send({ message: "nonexist" });
+        } else {
+            return res.status(200).send({ message: role[0].userName });
+        }
+    })
+    
+}

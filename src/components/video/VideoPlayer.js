@@ -15,78 +15,62 @@ class VideoPlayer extends React.Component {
           userReady: false,
           room_id: 0,
           roomReady: false,
-          start: false,
-          changed: 0
+          roommaster: false,
+          started:0
         }
     }
 
     ProcessCommand(data){
-      if(this.state.changed == 0){
+      if(this.state.started == 0){
         return
       }
       if(data === "play"){
-        console.log("Processing: play")
         this.player.play()
       } else if (data === 'paused'){
-        console.log("Processing: paused")
         this.player.pause()
       } else if (!isNaN(data) && !isNaN(parseFloat(data))){
-        console.log("Processing: skip")
         this.player.currentTime(parseFloat(data)+0.1)
       } else if (data  === "new") {
-        console.log("Processing: new requester")
+        this.socket.send(JSON.stringify(
+          {
+            "action": "url",
+            "url": this.videoNode.src
+        }));
+
         this.socket.send(JSON.stringify(
           {
             "action": "skip",
             "time": this.player.currentTime()
         }));
 
-        this.socket.send(JSON.stringify(
-          {
-            "action": "play",
-        }));
+        if(!this.player.paused()){
+          this.socket.send(JSON.stringify(
+            {
+              "action": "play",
+          }));
+        }
+      } else {
+        this.videoNode.src = data
       }
     }
 
     componentDidUpdate(prevProps) {
       var socket = this.socket
       if (this.props.sources[0].src !== prevProps.sources[0].src) {
-          this.player = videojs(this.videoNode, this.props, function () {
-            this.on('pause', function(event) {
-                  socket.send(JSON.stringify(
-                    {
-                      "action":"paused"
-                  }));
-              });
-            this.on('play', function(event) {
-                  socket.send(JSON.stringify(
-                    {
-                      "action":"play"
-                  }));
-              });
-            this.on('seeking', function(event) {
-                  socket.send(JSON.stringify(
-                    {
-                      "action": "skip",
-                      "time": this.currentTime()
-                  }));
-              });
-            this.bigPlayButton.on('click', function(){
-                  socket.send(JSON.stringify(
-                    {
-                      "action":"play"
-                    }));
-            });
-          })
           this.videoNode.src = this.props.sources[0].src
+          this.player.load()
+          this.socket.send(JSON.stringify(
+            {
+              "action": "url",
+              "url": this.videoNode.src
+            })
+          );
       }
 
-      if (this.props.changed !== prevProps.changed) {
-        this.setState({changed:this.props.changed})
-      }
     }
 
     componentDidMount() {
+
         this.setState({ user_id: this.props.user_id, 
                         userReady: true , 
                         room_id: this.props.room_id, 
@@ -115,7 +99,58 @@ class VideoPlayer extends React.Component {
                     this.ProcessCommand(event);
                   }
               });
+
+
+              this.player = videojs(this.videoNode, this.props, function () {
+                this.on('pause', function(event) {
+                      socket.send(JSON.stringify(
+                        {
+                          "action":"paused"
+                      }));
+                  });
+                this.on('play', function(event) {
+                      socket.send(JSON.stringify(
+                        {
+                          "action":"play"
+                      }));
+                  });
+                this.on('seeking', function(event) {
+                      socket.send(JSON.stringify(
+                        {
+                          "action": "skip",
+                          "time": this.currentTime()
+                      }));
+                  });
+                this.bigPlayButton.on('click', function(){
+                      socket.send(JSON.stringify(
+                        {
+                          "action":"play"
+                        }));
+                });
+              })
+
               this.socket = socket
+
+
+              var self = this;
+              console.log(this.state.room_id)
+              fetch(`http://${process.env.REACT_APP_URL}:4000/check`, {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      room_id: this.state.room_id,
+                  })
+              })
+                .then(response => response.json())
+                .then(function(data){
+                  if(data.message === self.state.user_id){
+                    self.setState({roommaster:true})
+                  }
+                })
+
         })
     }
 
@@ -126,11 +161,12 @@ class VideoPlayer extends React.Component {
     }
 
     synctime(){
-      if (this.state['start'] === false){
-          console.log("First Start")
+      if (this.state.roommaster === true){
           this.player.controls(true)
-          this.setState({"start":true})
+          this.setState({started:1})
       } else {
+        this.player.controls(true)
+        this.setState({started:1})
         this.socket.send(JSON.stringify(
           {
             "action":"request",
@@ -140,7 +176,7 @@ class VideoPlayer extends React.Component {
     }
 
     render() {
-      var changed = this.state.changed
+      var roommaster = this.state.roommaster
       return (
         <div> 
           <div data-vjs-player>
@@ -148,7 +184,12 @@ class VideoPlayer extends React.Component {
                    style={{width: "auto"}}
                    ref={ node => this.videoNode = node }/>
           </div>
-          { changed ? <button type="button" onClick={this.synctime}>Start</button> : null}
+          {roommaster ?   
+            <button type="button" onClick={this.synctime}>Start</button>  
+            : 
+            <button type="button" onClick={this.synctime}>Sync</button> 
+          }
+          
         </div>
       )
     }

@@ -18,4 +18,6 @@ module.exports = function(app) {
     app.post('/cr', controller.createroom)
 
     app.post('/jr', controller.joinroom)
+
+    app.post('/check', controller.check)
 }

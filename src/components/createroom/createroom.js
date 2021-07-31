@@ -225,7 +225,6 @@ class CreateRoom extends Component {
                         name="Room Name"
                         autoComplete="Room Name"
                         size="small"
-                        autoFocus
                         validations={[required]}
                         onChange={this.handleJoinTextChange} 
                         value={this.state.JoinText}
