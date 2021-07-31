@@ -14,15 +14,9 @@ var lastpause = 0;
 var lastskip = 0;
 var master = {}
 
-
 const app = express();
 const Role = db.role;
 const server = httpserver.createServer(app)
-// const io = require('socket.io')(server,{
-//   cors:{
-//       origin:'*',
-//   }
-// })
 
 var corsOptions={
   cors: true,
@@ -30,8 +24,6 @@ var corsOptions={
  }
  const io = socketIO(server, corsOptions);
 
-//const io = socketIO(server);
-//var corsOptions = { origin: "*" };
 
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
@@ -48,12 +40,12 @@ db.mongoose.connect(
     {   useCreateIndex: true, 
         useNewUrlParser: true, 
         useUnifiedTopology: true }
-).then( () => {
-    console.log("connected to MongoDB");
-    initial();
-}).catch(err => {
-    console.log("Connection error", err);
-    process.exit();
+    ).then( () => {
+        console.log("connected to MongoDB");
+        initial();
+    }).catch(err => {
+        console.log("Connection error", err);
+        process.exit();
 });
 
 app.get("/", (req, res) => {
@@ -154,27 +146,11 @@ io.on('connection', function(socket) {
 });
 
 
-// app.get('/comments/sync', (req, res) => {
-//     Comments.find((err ,data)=>{
-//         if(err){
-//             res.status(500).send(err)
-//         }else{
-//             res.status(200).send(data)
-//         }
-//     })
-// })
+////////////////////////////////////////////////////////////////////
 
-// app.post('/comments/new', (req, res) => {
-//     const dbComment = req.body
 
-//     Comments.create(dbComment, (err ,data)=>{
-//         if(err){
-//             res.status(500).send(err)
-//         }else{
-//             res.status(201).send(data)
-//         }
-//     })
-// })
+require("./routes/createroom")(app);
+
 ////////////////////////////////////////////////////////////////////
 
 server.listen(4000, function() {

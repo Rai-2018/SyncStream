@@ -2,6 +2,18 @@ import React from 'react';
 import VideoPlayer from './VideoPlayer';
 
 class Player extends React.Component {
+
+    constructor(props) {
+      super(props);
+      this.state = {
+            redirect: null,
+            userReady: false,
+            currentUser: {username: ""},
+            room_id: 0,
+            roomReady: false,
+      };
+    }
+    
     render(){
         var videoJsOptions = {
           controls: false,
@@ -15,8 +27,9 @@ class Player extends React.Component {
             responsive:true
           }]
         }
+
         return (
-            <VideoPlayer { ...videoJsOptions }  />
+            <VideoPlayer { ...videoJsOptions }  room_id={this.props.room_id} user_id={this.props.user_id}/>
         )
     }
 

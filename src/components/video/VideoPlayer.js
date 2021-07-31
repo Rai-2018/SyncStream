@@ -11,14 +11,12 @@ class VideoPlayer extends React.Component {
         this.ProcessCommand = this.ProcessCommand.bind(this)
         this.synctime = this.synctime.bind(this)
         this.state = {
-          // user_id: (parseInt(Math.random() * 100))% 10, 
-          // room_id: (parseInt(Math.random() * 100))% 2,
-          user_id: 0,
+          user_id: '',
+          userReady: false,
           room_id: 0,
+          roomReady: false,
           start: false
         }
-        console.log( "room_id: " + this.state['room_id'])
-        console.log( "user_id: " + this.state['user_id'])
     }
 
     ProcessCommand(data){
@@ -47,64 +45,68 @@ class VideoPlayer extends React.Component {
     }
 
     componentDidMount() {
-
-        const ws_url = `http://${process.env.REACT_APP_URL}:4000/?roomid=` + this.state['room_id']
-        const socket = io.connect(ws_url, {transports: ['websocket'], secure: true, reconnection: false, rejectUnauthorized: false });
-        this.socket = socket
-        socket.on('connect', () => {
-          console.log("Connecting to backend");
-            socket.send(JSON.stringify(
-                  {
-                    'action': "connect",
-                    "user_id": this.state['user_id']
-                }));
-
-        });
-
-        socket.on("connect_error", (err) => {
-          console.log(`connect_error: ${err.message}`);
-        });
-
-
-        socket.on('message', (event) => {
-
-            if(event != null) {
-              this.ProcessCommand(event);
-            }
-        });
-        
-        this.player = videojs(this.videoNode, this.props, function () {
-          this.on('pause', function(event) {
-                console.log("paused")
+        this.setState({ user_id: this.props.user_id, userReady: true }, () => {
+          this.setState({ room_id: this.props.room_id, roomReady: true }, () => {
+            console.log("user_id: " + this.state.user_id)
+            console.log("room_id: " + this.state.room_id)
+            const ws_url = `http://${process.env.REACT_APP_URL}:4000/?roomid=` + this.state['room_id']
+            const socket = io.connect(ws_url, {transports: ['websocket'], secure: true, reconnection: false, rejectUnauthorized: false });
+            this.socket = socket
+            socket.on('connect', () => {
+              console.log("Connecting to backend");
                 socket.send(JSON.stringify(
-                  {
-                    "action":"paused"
-                }));
+                      {
+                        'action': "connect",
+                        "user_id": this.state['user_id']
+                    }));
+
             });
-          this.on('play', function(event) {
-                console.log("play")
-                socket.send(JSON.stringify(
-                  {
-                    "action":"play"
-                }));
+
+            socket.on("connect_error", (err) => {
+              console.log(`connect_error: ${err.message}`);
             });
-          this.on('seeking', function(event) {
-                console.log("seeking")
-                socket.send(JSON.stringify(
-                  {
-                    "action": "skip",
-                    "time": this.currentTime()
-                }));
+
+            socket.on('message', (event) => {
+
+                if(event != null) {
+                  this.ProcessCommand(event);
+                }
             });
-          this.bigPlayButton.on('click', function(){
-                console.log("click")
-                socket.send(JSON.stringify(
-                  {
-                    "action":"play"
-                  }));
+            
+            this.player = videojs(this.videoNode, this.props, function () {
+              this.on('pause', function(event) {
+                    console.log("paused")
+                    socket.send(JSON.stringify(
+                      {
+                        "action":"paused"
+                    }));
+                });
+              this.on('play', function(event) {
+                    console.log("play")
+                    socket.send(JSON.stringify(
+                      {
+                        "action":"play"
+                    }));
+                });
+              this.on('seeking', function(event) {
+                    console.log("seeking")
+                    socket.send(JSON.stringify(
+                      {
+                        "action": "skip",
+                        "time": this.currentTime()
+                    }));
+                });
+              this.bigPlayButton.on('click', function(){
+                    console.log("click")
+                    socket.send(JSON.stringify(
+                      {
+                        "action":"play"
+                      }));
+              });
+            });
           });
+        })
 
-        });
     }
 
     // destroy player on unmount
@@ -129,16 +131,17 @@ class VideoPlayer extends React.Component {
     }
 
     render() {
-    return (
-      <div> 
-        <div data-vjs-player>
-          <video className="video-js vjs-theme-forest vjs-16-9" 
-                 style={{width: "auto"}} 
-                 ref={ node => this.videoNode = node }/>
+      return (
+        <div> 
+          <div data-vjs-player>
+            <video className="video-js vjs-theme-forest vjs-16-9" 
+                   style={{width: "auto"}} 
+                   ref={ node => this.videoNode = node }/>
+
+          </div>
+          <button type="button" onClick={this.synctime}>Start</button>
         </div>
-        <button type="button" onClick={this.synctime}>Start</button>
-      </div>
-    )
+      )
     }
 }
 
