@@ -12,7 +12,9 @@ checkDuplicates = (req, res, next) => {
         }
 
         if(user) {
+            console.log("username in use");
             res.status(400).send({ message: "Username in use already." });
+            
             return;
         }
 

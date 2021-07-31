@@ -5,9 +5,9 @@ import { ValidatorForm } from "react-material-ui-form-validator";
 import AuthService from "../../services/auth-service";
 import { isEmail } from "validator";
 import Avatar from '@material-ui/core/Avatar';
-import { Button, FormControl, Input, InputLabel, OutlinedInput } from '@material-ui/core';
+import { Button, Paper } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
@@ -15,24 +15,40 @@ import { TextValidator, ValidatorComponent } from "react-material-ui-form-valida
 
 const styles = (theme) => ({
     paper: {
+      position: "relative",
       marginTop: theme.spacing(5),
+      padding: `${theme.spacing(2)}px ${theme.spacing(1)}px`,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
     },
     avatar: {
+      marginTop: 15,
+      width: "100px",
+      height: "100px",
+      position: "relative",
       margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
     },
-    form: {
+    icon: {
+        width: "70px",
+        height: "70px",
+        // color: "rgba(131,153,167,0.79)"
+
+    },
+    ValidatorForm: {
       width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
+      marginTop: theme.spacing(2),
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
     container: {
       marginTop: theme.spacing(1),
+    },
+    TextValidator: {
+        width: '100px',
+        
+        position: "relative",
     }
   });
 
@@ -46,36 +62,6 @@ const required = value => {
     }
 };
 
-const email = value => {
-    if(!isEmail(value)) {
-        return (
-            <Alert severity = "warning">
-                This is not a valid email!
-            </Alert>
-        );
-    }
-};
-
-const vusername = value => {
-    if(value.length < 3 || value.length > 20) {
-        return (
-            <Alert severity = "warning">
-                Username must be between 3-20 characters.
-            </Alert>
-        );
-    }
-};
-
-const vpassword = value => {
-    if(value.length < 6 || value.length > 40) {
-        return (
-            <Alert severity = "warning">
-                Password must be between 6 and 40 characters.
-            </Alert>
-        );
-    }
-};
-
 class Register2 extends Component {
     constructor(props) {
         super(props);
@@ -83,6 +69,22 @@ class Register2 extends Component {
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        if(!ValidatorForm.hasValidationRule('isUsernameRight')) {
+            ValidatorForm.addValidationRule('isUsernameRight', (value) =>{
+                if(value.length < 6 || value.length > 40) {
+                    return false;
+                }
+                return true;
+            });
+        }
+        if(!ValidatorForm.hasValidationRule('isPasswordRight')) {
+            ValidatorForm.addValidationRule('isPasswordRight', (value) =>{
+                if(value.length < 6 || value.length > 40) {
+                    return false;
+                }
+                return true;
+            });
+        }
         
         this.state = {
             username: "",
@@ -90,80 +92,88 @@ class Register2 extends Component {
             password: "",
             successful: false,
             message: "",
+            submitted: false,
+            tester: 0
         };
+    }
+
+    componentWillUnmount(){
+        if(ValidatorForm.hasValidationRule('isUsernameRight')){
+            ValidatorForm.removeValidationRule('isUsernameRight');
+        }
+        if(ValidatorForm.hasValidationRule('isPasswordRight')){
+            ValidatorForm.removeValidationRule('isPasswordRight');
+        }
     }
     
     onChangeUsername(e) {
-        if(e.target.value.length < 3 || e.target.value.length > 20) {
-            e.preventDefault();
-            this.setState({                
-                message: "Username must be between 4-20 characters."
-            });
-        }else {
-            this.setState({
-                username: e.target.value
-            });
-        }   
-           
+        this.setState({
+            username: e.target.value
+        });   
     }
     onChangeEmail(e) {
-        if(!isEmail(e.target.value)) {
-            e.preventDefault();
-            this.setState({
-                message: "This is not a valid email!"
-            });
-        } else {
-            this.setState({
-                email: e.target.value
-            });
-        }
+        this.setState({
+            email: e.target.value
+        });
+        
         
     }
     onChangePassword(e) {
-        if(e.target.value.length < 3 || e.target.value.length > 20) {
-            e.preventDefault();
-            this.setState({
-                message: "Password must be between 6 and 40 characters."
-            });
-        } else {
-            this.setState({
-                password: e.target.value
-            });
-        }
+        
+        this.setState({
+            password: e.target.value
+        });
         
     }
+
+    handleSubmit(e){
+        e.preventDefault();
+        if(this.state.submitted && this.state.successful) {
+            this.setState({
+                message: "Successfully Registered"
+            });
+        }
+        else {
+            this.setState({
+                message: "Failed to Register"
+            });
+        }
+    }
+
     handleRegister(e) {
         e.preventDefault();
         console.log("registering");
         this.setState({
             message: "",
-            successful: false,            
+            successful: false
         });
-        this.form.validateAll();
-        if(this.checkBtn.context._errors.length === 0) {
+        const {submitted} = this.state.submitted;
 
-            AuthService.register(
-                this.state.username,
-                this.state.email,
-                this.state.password
-            )
-            .then(
-                response => {
-                    this.setState({
-                        message: response.data.message,
-                        successful: true
-                    });
+        AuthService.register(
+            this.state.username,
+            this.state.email,
+            this.state.password
+        )
+        .then(
+            response => {
+                this.setState({
+                    // message: response.data.message,
+                    message: "Registration Success",
+                    successful: true,
+                    submitted: true,
+                    tester: 0
                 },
                 error => {
                     const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
                     this.setState({
                         successful: false,
-                        message: resMessage
+                        message: resMessage,
+                        tester: 1
                     });
                 }
-            );
-        }
-        
+                );
+            }
+        );
     }
 
     render() {
@@ -171,57 +181,50 @@ class Register2 extends Component {
         return (
             <Container component="main" maxWidth="xs" className={classes.container}>
                 <CssBaseline />
-                    <div className={classes.paper}>     
-
-                    <Form className={classes.form} onSubmit={this.handleRegister} ref={c => { this.form=c; }}>
-                        {!this.state.successful && (
+                    <Paper className={classes.paper}>     
+                    <Avatar className={classes.avatar}>
+                        <PeopleAltIcon className={classes.icon} />
+                    </Avatar>
+                    <ValidatorForm ref="form" onSubmit={this.handleRegister} >
+                        {!this.state.successful && !this.state.submitted && (
                             <div>
-                                <FormControl outlined required fullWidth margin="normal">
-                                    <InputLabel outlined htmlFor="username" className={classes.labels}>Username</InputLabel>
-                                    <Input 
-                                        type='text'
-                                        className={classes.inputs}
-                                        name='username'
-                                        autoComplete="username"
-                                        // placeholder={this.state.message}
-                                        // value={this.state.username}
-                                        onChange={this.onChangeUsername}
-                                        // validations={[required, vusername]}
-                                        // errorMessages={'this field is required', 'username not valid'}
-                                        
-                                        // 
-                                    />
-                                </FormControl>
 
-                                <FormControl required fullWidth margin="normal">
-                                    <InputLabel htmlFor="email" className={classes.labels}>Email</InputLabel>
-                                    <Input 
-                                        name='email'
-                                        type='email'
-                                        autoComplete='email'
-                                        // value={this.state.email}
-                                        
-                                        className={classes.inputs}
-                                        onChange={this.onChangeEmail}
-                                        // validations={[required, email]}
-                                    />
-                                </FormControl>
-
-                                <FormControl required fullWidth margin="normal">
-                                    <InputLabel htmlFor="password" className={classes.labels}>Password</InputLabel>
-                                    <Input 
-                                        name='password'
-                                        type='password'
-                                        className={classes.inputs}
-                                        // value={this.state.password}
-                                        
-                                        // disabledUnderline={true}
-                                        onChange={this.onChangePassword}
-                                        // validations={[required, vpassword]}
-                                    />
-                                </FormControl>
-
-                                
+                                <TextValidator 
+                                    label="Username"
+                                    name='username'
+                                    type="username"
+                                    value={this.state.username}
+                                    onChange={this.onChangeUsername}
+                                    fullWidth
+                                    validators={['isUsernameRight', 'required']}
+                                    errorMessages={['Username must be between 3-20 characters.', 'This field is required']}
+                                    
+                                />
+                                <br />
+                                <TextValidator 
+                                    name='email'
+                                    type='email'
+                                    label='email'
+                                    value={this.state.email}
+                                    fullWidth
+                                    onChange={this.onChangeEmail}
+                                    validators={['required', 'isEmail']}
+                                    errorMessages={['This field is required', 'This is not a valid email!']}
+                                />
+                                <br />
+                                <TextValidator 
+                                    name='password'
+                                    label='password'
+                                    type="password"
+                                    className={classes.inputs}
+                                    fullWidth
+                                    // value={this.state.password}
+                                    value={this.state.password}
+                                    onChange={this.onChangePassword}
+                                    validators={['isPasswordRight','required']}
+                                    errorMessages={['Password must be between 6 and 40 characters.', 'This field is required']}
+                                />
+                                <br />
                                 <Button 
                                     // className="btn btn-primary btn-block"
                                     disableRipple
@@ -229,25 +232,35 @@ class Register2 extends Component {
                                     variant="outlined"
                                     className={classes.button}
                                     type="submit"
+                                    // onClick={this.handleSubmit}
                                 >
                                     Sign Up
+                                    
                                 </Button>
-                                
                             </div>
                         )}
-                        {this.state.message && (
-                            <div className="form-group">
-                                <Alert 
-                                    severity={this.state.successful?"success":"error"}>
-                                    {this.state.message}
-                                </Alert>
+                        {/* {this.state.message && (
+                            <div className={this.state.successful?"alert alert-success":"alert alert danger"}>
+                                {this.state.message}
                             </div>
-                        )}                     
-                      <CheckButton style={{ display: "none" }} ref={c => { this.checkBtn = c; }} />
+                        )} */}
+                        {(this.state.successful && this.state.tester == 0) && (
+                            <Alert severity="success">
+                                Successfully Registered
+                            </Alert>
+                        )}
+                        {(!this.state.successful && this.state.tester == 1) && (
+                            // <Alert severity="error">
+                            //     Failed to Register
+                            // </Alert>
+                            <div className="alert alert danger">
+                                {this.state.message}
+                            </div>
+                        )}
+                        
 
-                    </Form>
-                    
-                </div>
+                    </ValidatorForm>
+                </Paper>
             </Container>
         );
     }
