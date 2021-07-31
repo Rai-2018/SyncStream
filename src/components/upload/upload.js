@@ -107,22 +107,26 @@ class UploadVideo extends React.Component {
 
 class Upload extends React.Component {
 
-    state = {
-        videos: [
-            {
-                name: "Video1",
-                id: 1
-              },
-              {
-                name: "Video2",
-                id: 2
-              },
-              {
-                name: "Video3",
-                id: 3
-              }
-            ]
-    };
+    constructor(props) {
+        super(props);
+        this.updateShared = this.updateShared.bind(this)
+        this.state = {
+            videos: [
+                {
+                    name: "Video1",
+                    id: 1
+                  },
+                  {
+                    name: "Video2",
+                    id: 2
+                  },
+                  {
+                    name: "Video3",
+                    id: 3
+                  }
+                ]
+        };
+    }
 
     handleRemovevideo = (id) => {
         this.setState(prevState => {
@@ -130,6 +134,10 @@ class Upload extends React.Component {
                 videos: prevState.videos.filter( p => p.id !== id)
             };
         });
+    }
+
+    updateShared(url) {
+        this.props.updateShared(url);
     }
 
     render(){
@@ -151,7 +159,11 @@ class Upload extends React.Component {
                     )}
                     {/* upload video */}
                     {/* <UploadFile /> */}
-                </div>  
+                </div>
+
+
+                <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/a.mp4`)}> TEST </button>
+                <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/b.mp4`)}> TEST1 </button>
                 <UploadVideo />
             </div>
         );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link, BrowserRouter as Router} from 'react-router-dom';
 
 
 import AuthService from './services/auth-service';
@@ -18,6 +18,7 @@ import Chatbox from './components/chatbox/Chat';
 import Main from './components/main/main';
 
 import CreateRoom from './components/createroom/createroom';
+import Room from './components/createroom/room';
 
 import AppBar from "@material-ui/core/AppBar"
 import { IconButton , Toolbar, Typography, Button} from '@material-ui/core';
@@ -102,7 +103,7 @@ class App extends React.Component {
                   &nbsp;
                 &nbsp;
                 <Button color="inherit" variant="contained">
-                  <a href="/Create" className="nav-link">Create</a>
+                  <a href="/create" className="nav-link">Create</a>
                 </Button>
 
               </React.Fragment>
@@ -125,7 +126,7 @@ class App extends React.Component {
 
 
         <div className="container mt-3">
-          <Switch>
+        <Switch>
             <Route exact path={["/", "/home"]} component={SignIn} />
             <Route exact path={"/login"} component={SignIn} />
             <Route exact path={"/register"} component={Register} />
@@ -138,10 +139,8 @@ class App extends React.Component {
             <Route exact path='/upload' component={Upload}/>
             <Route exact path='/chat' component={Chatbox}/>
             <Route exact path='/main' component={Main}/>
-            <Route exact path='/loginr' component={SignIn}/>
-            <Route exact path='/register2' component={Register}/>
-            
-          </Switch>
+            <Route path='/room/:roomid' render={(props) => <Room {...props}/>}/>
+        </Switch>
         </div>
         
       </React.Fragment>
