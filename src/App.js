@@ -71,9 +71,15 @@ class App extends React.Component {
             )}
 
             {showAdminBoard && (
-              <IconButton color="inherit">
-                  <Link to={"/admin"} className="nav-link">Admin Board</Link>
-              </IconButton>
+              <React.Fragment>
+                <Button color="inherit" variant="contained">
+                    <Link to={"/admin"} className="nav-link">Admin Board</Link>
+                </Button>
+                &nbsp;
+                &nbsp;
+              </React.Fragment>
+              
+            
             )}
 
 
