@@ -27,7 +27,7 @@ checkDuplicates = (req, res, next) => {
             }
     
             if(user) {
-                res.status(400).send({ message: " already." });
+                res.status(400).send({ message: " Email is used already." });
                 return;
             }
 

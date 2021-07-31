@@ -81,14 +81,11 @@ class App extends React.Component {
             currentUser ? (
               <React.Fragment>
 
-                <Button color="inherit" variant="contained">
+                {/* <Button color="inherit" variant="contained">
                   <Link to={"/main"} >
                     Main
                   </Link>
-                </Button>
-
-                &nbsp;
-                &nbsp;
+                </Button> */}
                 
                 <Button color="inherit" variant="contained">
                   <Link to={"/profile"} className="nav-link">{ currentUser.username }</Link>

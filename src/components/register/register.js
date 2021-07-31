@@ -12,22 +12,28 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
 import { TextValidator, ValidatorComponent } from "react-material-ui-form-validator";
+import { SignalCellularOff } from "@material-ui/icons";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const styles = (theme) => ({
     paper: {
       position: "relative",
-      marginTop: theme.spacing(5),
+      marginTop: theme.spacing(3),
       padding: `${theme.spacing(2)}px ${theme.spacing(1)}px`,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
     },
     avatar: {
-      marginTop: 15,
+      marginTop: 5,
       width: "100px",
       height: "100px",
       position: "relative",
       margin: theme.spacing(1),
+      marginBottom: theme.spacing(3)
     },
     icon: {
         width: "70px",
@@ -37,7 +43,8 @@ const styles = (theme) => ({
     },
     ValidatorForm: {
       width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(1),
+
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -45,10 +52,9 @@ const styles = (theme) => ({
     container: {
       marginTop: theme.spacing(1),
     },
-    TextValidator: {
-        width: '100px',
-        
+    TextValidator: {        
         position: "relative",
+        width: '100%',
     }
   });
 
@@ -157,23 +163,28 @@ class Register2 extends Component {
         .then(
             response => {
                 this.setState({
-                    // message: response.data.message,
-                    message: "Registration Success",
+                    message: response.data.message,
+                    
+                    // message: "Registration Success",
                     successful: true,
                     submitted: true,
                     tester: 0
                 },
-                error => {
-                    const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-                    this.setState({
-                        successful: false,
-                        message: resMessage,
-                        tester: 1
-                    });
-                }
+                
                 );
+                console.log(typeof(response));
             }
-        );
+        ).catch(error=>{
+            const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            
+            this.setState({
+                successful: false,
+                message: resMessage,
+                tester: 1
+            });
+            
+        }); 
+       
     }
 
     render() {
@@ -181,15 +192,17 @@ class Register2 extends Component {
         return (
             <Container component="main" maxWidth="xs" className={classes.container}>
                 <CssBaseline />
-                    <Paper className={classes.paper}>     
+                    <div className={classes.paper}>     
                     <Avatar className={classes.avatar}>
                         <PeopleAltIcon className={classes.icon} />
                     </Avatar>
-                    <ValidatorForm ref="form" onSubmit={this.handleRegister} >
+                    <ValidatorForm className={classes.ValidatorForm} ref="form" onSubmit={this.handleRegister} >
                         {!this.state.successful && !this.state.submitted && (
                             <div>
 
-                                <TextValidator 
+                                <TextValidator className={classes.TextValidator}
+                                    autoFocus
+                                    variant="outlined"
                                     label="Username"
                                     name='username'
                                     type="username"
@@ -197,11 +210,11 @@ class Register2 extends Component {
                                     onChange={this.onChangeUsername}
                                     fullWidth
                                     validators={['isUsernameRight', 'required']}
-                                    errorMessages={['Username must be between 3-20 characters.', 'This field is required']}
-                                    
+                                    errorMessages={['Username must be between 3-20 characters.', 'This field is required']} 
                                 />
                                 <br />
                                 <TextValidator 
+                                    variant="outlined"
                                     name='email'
                                     type='email'
                                     label='email'
@@ -213,6 +226,7 @@ class Register2 extends Component {
                                 />
                                 <br />
                                 <TextValidator 
+                                    variant="outlined"
                                     name='password'
                                     label='password'
                                     type="password"
@@ -253,14 +267,13 @@ class Register2 extends Component {
                             // <Alert severity="error">
                             //     Failed to Register
                             // </Alert>
-                            <div className="alert alert danger">
+                            <Alert severity="error">
                                 {this.state.message}
-                            </div>
+                            </Alert>
                         )}
                         
-
                     </ValidatorForm>
-                </Paper>
+                </div>
             </Container>
         );
     }

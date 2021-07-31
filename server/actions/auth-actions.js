@@ -97,3 +97,9 @@ exports.signin = (req, res) => {
         });
     });
 };
+
+// exports.deleteUser = async(req,res,next)=>{
+//     try{
+//         const userID = req.
+//     }
+// }
