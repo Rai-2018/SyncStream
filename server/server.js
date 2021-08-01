@@ -31,9 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-app.use("/video", express.static(__dirname));
-require("./routes/uploadvideo")(app);
-
+app.use("/video", express.static(__dirname + '/routes/uploadVideos'));
 
 db.mongoose.connect(
     'mongodb://127.0.0.1/SyncStream', 
@@ -146,6 +144,11 @@ io.on('connection', function(socket) {
 
 
 require("./routes/createroom")(app);
+
+////////////////////////////////////////////////////////////////////
+
+require("./routes/uploadvideo")(app);
+require("./routes/videolist")(app);
 
 ////////////////////////////////////////////////////////////////////
 

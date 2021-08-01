@@ -59,7 +59,7 @@ class UploadVideo extends React.Component {
     fileUploadHandler = (event) => {
         const data = new FormData();
         data.append('file', this.state.selectedVideo[0]);
-        axios.post(`http://${process.env.REACT_APP_URL}:4000/api/video`, data, {
+        axios.post(`http://${process.env.REACT_APP_URL}:4000/api/upload`, data, {
                 onUploadProgress: ProgressEvent => {
                 this.setState({
                     loaded: (ProgressEvent.loaded / ProgressEvent.total * 100)
@@ -81,7 +81,7 @@ class UploadVideo extends React.Component {
               </div>
               <h4>Upload Your Video</h4>
               <hr className="my-4" />  
-              <form method="post" name="videoUpload" action="/api/video" id="#" encType="multipart/form-data">
+              <form method="post" name="videoUpload" action="/api/upload" id="#" encType="multipart/form-data">
                 <div className="form-group files">
                   <input
                     type="file"
@@ -157,11 +157,8 @@ class Upload extends React.Component {
                         removevideo={this.handleRemovevideo}
                     />
                     )}
-                    {/* upload video */}
-                    {/* <UploadFile /> */}
                 </div>
-
-
+                {/* upload video*/}
                 <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/a.mp4`)}> TEST </button>
                 <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/b.mp4`)}> TEST1 </button>
                 <UploadVideo />
