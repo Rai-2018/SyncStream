@@ -8,7 +8,7 @@ exports.upload = (req, res) => {
     const video = new Video({
         video_name: video_name,
         video_path: video_path,
-        room_name: "room1"
+        room_name: "room_1"
     });
     // console.log(`my video name is ` + video_name);
     // console.log(`my video path is ` + video_path);
