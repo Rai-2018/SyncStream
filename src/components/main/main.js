@@ -74,7 +74,7 @@ class Main extends Component {
                         </Grid>
                         <Grid item xs={4}>
                         <Paper className={classes.paper}>
-                            <Chatbox />
+                        <Chatbox room_id={this.state.room_id} user_id={this.state.currentUser.username} /> 
                         </Paper>
                         </Grid>
                     </Grid> 
@@ -82,7 +82,6 @@ class Main extends Component {
                     :
 
                     null}
-                }
 
             </div>      
         )
