@@ -149,6 +149,7 @@ require("./routes/createroom")(app);
 
 require("./routes/uploadvideo")(app);
 require("./routes/videolist")(app);
+require("./routes/deletevideo")(app);
 
 ////////////////////////////////////////////////////////////////////
 

@@ -1,7 +1,6 @@
 body {
   background: #e8e7e7; 
   font-family: arial;
-  text-transform: uppercase;
 }
 
 header {
@@ -41,12 +40,12 @@ input[type=submit] {
 
 /* ICONS */
 
-.list svg {
+/* .list svg {
   width: 28px;
   height: 19px;
   margin-right: 5px;
   fill: #F0F0F0;
-}
+} */
 
 .is-high-score {
   fill: #FFC657;
@@ -73,7 +72,7 @@ input[type=submit] {
 .video {
   display: flex;
   font-size: 1.2em;
-  border-bottom: solid 2px #EEEEEE;
+  border-bottom: solid 1px grey;
   letter-spacing: 2px;
 }
 
@@ -165,7 +164,8 @@ input[type=submit] {
 }
 
 .files {
-  position:relative
+  position:relative;
+  width: auto
 }
 
 .files::after {  

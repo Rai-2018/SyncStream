@@ -3,60 +3,64 @@ import axios from 'axios';
 import './upload.css';
 import { Progress } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
-import {Link, Redirect } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { VideoCallSharp } from '@material-ui/icons';
 
 class Video extends React.Component {
     constructor(props){
         super(props);
-    
-        let shouldRedirect = false;
-
-        this.state = {
-            redirect: shouldRedirect,
-            videoList: []
-        }
     };
 
     componentDidMount() {
-        axios.get(`http://${process.env.REACT_APP_URL}:4000/api/list`, {
-            headers: {
-                // 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('userTokenTime')).token
+        this.props.listRetrieveHandler();
+    }
+
+    removeVideoHandler = (videoName) => {
+        axios.get(`http://${process.env.REACT_APP_URL}:4000/api/delete`, {
+            params: {
+                video_name: videoName
             }
         }).then(res => {
-            this.setState({
-                videoList: res.data
-            });
+            if(res.data.message == "delete video fails"){
+                toast.error(`Delete Fail with status: ${res.data.message}`);
+            }
+            else {
+                toast.success(`Delete Successful for video: ${res.data.message}`);
+            }
+            // TODO
+            // this.setState(prevState => {
+            //     return{
+            //         video_list: prevState.video_list.filter( p => p.video_name !== videoName)
+            //     };
+            // });
         }).catch( err => {
             toast.error(`Get Video List Fail with status: ${err}`);
         });
     }
 
     render(){
-        var video_path = `http://${process.env.REACT_APP_URL}:4000/video/a.mp4`;
-        if (this.state.redirect) return <Redirect to="/main" />
-
-        const videos = this.state.videoList.map(video => {
-            <div className="video">
-            <span className="video-name">
-                {this.props.name}
-            </span>
-                <div className="counter">
-                    <button className="counter-action play" onClick={() => this.props.updateShared(video_path)}> Play </button>
-                    <button className="counter-action delete" onClick={() => this.props.removevideo(this.props.id)}> Delete </button>    
-                </div>
-            </div> 
+        // var video_path = `http://${process.env.REACT_APP_URL}:4000/video/a.mp4`;
+        // console.log(this.props.video_list)
+        const videos = this.props.video_list.map(video => {
+            return(
+                <div className="video">
+                    <span className="video-name">
+                        {video.video_name}
+                    </span>
+                    <div className="counter">
+                        <button className="counter-action play" onClick={() => this.props.updateShared(video.video_path)}> Play </button>
+                        <button className="counter-action delete" onClick={() => this.removeVideoHandler(video.video_name)}> Delete </button>    
+                    </div>
+                </div> 
+            );     
         });
-
+       
         return (
           <React.Fragment>
-            <button onClick={() => this.setState({redirect: true})}> Refresh </button>
             <div className="list" >
                 <header>
                     <h1>video list</h1>
-                    <span className="stats">videos #: {this.state.videoList.length}</span>
+                    <span className="stats">videos #: {this.props.video_list.length}</span>
                 </header>
                 <div>
                     { videos }
@@ -70,10 +74,15 @@ class Video extends React.Component {
 class UploadVideo extends React.Component {
     constructor(props){
         super(props);
+        this.listRetrieveHandler = this.listRetrieveHandler.bind(this);
+        this.state = {
+            selectedVideo: null,
+            loaded: 0
+        }
     };
-    state = {
-        selectedVideo: null,
-        loaded: 0
+   
+    listRetrieveHandler() {
+        this.props.listRetrieveHandler();
     }
 
     fileSelectedHandler = event => {
@@ -85,8 +94,15 @@ class UploadVideo extends React.Component {
     }       
 
     fileUploadHandler = (event) => {
-        const data = new FormData();
-        data.append('file', this.state.selectedVideo[0]);
+        const data = new FormData();      
+        // console.log(this.props.room_id);
+        if(this.state.selectedVideo == null){
+            toast.error("Please choose the video!");
+            return;
+        } else {
+            data.append('file', this.state.selectedVideo[0]);
+        }  
+        data.append('room_id', this.props.room_id);
         axios.post(`http://${process.env.REACT_APP_URL}:4000/api/upload`, data, {
                 onUploadProgress: ProgressEvent => {
                 this.setState({
@@ -94,12 +110,19 @@ class UploadVideo extends React.Component {
                 });
             }
         }).then(function (res){
-            toast.success('Upload Successful');
+            // console.log(res);
+            if(res.data.message == "video name exists"){
+                toast.error(`Upload Fail with status: ${res.data.message}`);
+            }
+            else {
+                toast.success(`Upload Successful for video: ${res.data.message}`);
+            }
 
-            // TODO: refresh video list
+            // TODO refresh video list
+            // this.listRetrieveHandler();
 
         }).catch(function (err) {
-            toast.error(`Upload Fail with status: video name exists`);
+            toast.error(`Upload Fail with status: ${err}`);
         });
     }
 
@@ -137,58 +160,52 @@ class UploadVideo extends React.Component {
 }
 
 class Upload extends React.Component {
-
     constructor(props) {
         super(props);
         this.updateShared = this.updateShared.bind(this)
-        // this.state = {
-        //     videos: [
-        //         {
-        //             name: "Video1",
-        //             id: 1
-        //           },
-        //           {
-        //             name: "Video2",
-        //             id: 2
-        //           },
-        //           {
-        //             name: "Video3",
-        //             id: 3
-        //           }
-        //         ]
-        // };
+        this.state = {
+            video_list: []
+        }
     }
-
-    // handleRemovevideo = (id) => {
-    //     this.setState(prevState => {
-    //         return{
-    //             videos: prevState.videos.filter( p => p.id !== id)
-    //         };
-    //     });
-    // }
 
     updateShared(url) {
         this.props.updateShared(url);
     }
 
-    handleGetlist = () => {
-        this.setState(prevState => {
-            
-        })
-    }
+    listRetrieveHandler = (event) => {
+        axios.get(`http://${process.env.REACT_APP_URL}:4000/api/list`, {
+            params: {
+                room_id: this.props.room_id
+            }
+        }).then(res => {
+            // console.log(res);
+            // console.log(res.data);
+            this.setState({
+                video_list: res.data
+            });
+        }).catch( err => {
+            toast.error(`Get Video List Fail with status: ${err}`);
+        });
+    }    
 
     render(){
         return (
             <div>
                 {/* videos list*/}
                 <Video 
-                    removevideo={this.handleRemovevideo}
                     updateShared={this.updateShared}
+                    room_id={this.props.room_id}
+                    user_id={this.props.user_id} 
+                    video_list={this.state.video_list}
+                    listRetrieveHandler={this.listRetrieveHandler}
                 />
                 {/* upload video*/}
-                <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/a.mp4`)}> TEST </button>
-                <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/b.mp4`)}> TEST1 </button>
-                <UploadVideo />
+                {/* <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/a.mp4`)}> TEST </button> */}
+                <UploadVideo 
+                    room_id={this.props.room_id}
+                    video_list={this.state.video_list}
+                    listRetrieveHandler={this.listRetrieveHandler}
+                />
             </div>
         );
     }  
