@@ -3,8 +3,6 @@ import {withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types'
 import Main from '../main/main'
 import AuthService from "../../services/auth-service";
-import {Redirect} from 'react-router';
-
 
 const styles = (theme) => ({
   paper: {
@@ -63,8 +61,8 @@ class Room extends Component {
   }
 
 	render(){
-    const {classes} = this.props;
-    const {currentUser} = this.state;
+    // const {classes} = this.props;
+    // const {currentUser} = this.state;
 
 		return(
       <div>

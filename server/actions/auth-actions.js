@@ -97,3 +97,36 @@ exports.signin = (req, res) => {
         });
     });
 };
+
+exports.getAllUser = (req, res) => {
+    // User.find({}, (err,res) => {
+    //     var userMap = {};
+    //     users.forEach(function(user) {
+    //         userMap[user._id] = user;
+    //     });
+    //     if(err) {
+    //         console.log('did not get all user');
+    //         return res.status(404).send({ message: "cannot find user" });
+    //     }
+
+    //     res.render('/allusers',userMap);
+    // })
+    User.find({}).exec(function(err, users){
+        if(err) throw err;
+        //res.json(users);
+        return res.status(200).send({ 
+            users: users
+        });
+    })
+}
+
+exports.deleteUser = (req, res, next) => {
+    console.log(req.body.id);
+    User.deleteOne({_id: req.body.id}, (err, data) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.status(200).send({message: " deleted user "});
+        }
+    });
+}
