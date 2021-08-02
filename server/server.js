@@ -56,6 +56,7 @@ app.get("/", (req, res) => {
 
 require("./routes/signInR")(app);
 require("./routes/roleroutes")(app);
+require("./routes/adminR")(app);
 
 function initial() {
     Role.estimatedDocumentCount((err,count) => {

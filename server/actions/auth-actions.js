@@ -99,17 +99,33 @@ exports.signin = (req, res) => {
 };
 
 exports.getAllUser = (req, res) => {
-    User.find({}, (err,res) => {
-        var userMap = {};
-        users.forEach(function(user) {
-            userMap[user._id] = user;
-        });
-        if(err) {
-            console.log('did not get all user');
-            return res.status(404).send({ message: "cannot find user" });
-        }
+    // User.find({}, (err,res) => {
+    //     var userMap = {};
+    //     users.forEach(function(user) {
+    //         userMap[user._id] = user;
+    //     });
+    //     if(err) {
+    //         console.log('did not get all user');
+    //         return res.status(404).send({ message: "cannot find user" });
+    //     }
 
-        res.render('/allusers',userMap);
+    //     res.render('/allusers',userMap);
+    // })
+    User.find({}).exec(function(err,users){
+        if(err) throw err;
+        res.json(users);
+        return res.status(200).send({ 
+            users: user
+        });
     })
 }
 
+exports.deleteUser = (req, res, next) => {
+    User.findByIdAndRemove(req.params.id, (err, data) => {
+        if(err) {
+            return nex(err);
+        } else {
+            res.status.json({msg: data})
+        }
+    });
+}

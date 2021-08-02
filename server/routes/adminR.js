@@ -9,7 +9,7 @@ module.exports = function(app) {
         );
         next();
     });
-    app.get('/admin/allusers', controller.getAllUser);
+    app.post('/admin/allusers', controller.getAllUser);
 
 }
 

@@ -7,7 +7,8 @@ import Alert from '@material-ui/lab/Alert';
 import AuthService from "../../services/auth-service";
 import {Redirect} from 'react-router';
 import UserService from "../../services/user-service";
-
+import DataTable from "./data-table";
+import axios from "axios";
 
 const styles = (theme) => ({
     paper: {
@@ -52,21 +53,33 @@ export default class BoardAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            
+            userCollection: [],
             content: "", 
             users: null
         };
     }
     componentDidMount() {
-        UserService.getAdminBoard().then(
-            response => {
-                this.setState({ content: response.data });
-            },
+        // UserService.getAdminBoard().then(
+        //     response => {
+        //         this.setState({ content: response.data });
+        //     },
 
-            error => {
-                this.setState({ content: (error.response && error.response.data && error.response.data.message) || error.message || error.toString() });
-            }
-        );
+        //     error => {
+        //         this.setState({ content: (error.response && error.response.data && error.response.data.message) || error.message || error.toString() });
+        //     }
+        // );
+        axios.get(`http://${process.env.REACT_APP_URL}:4000/admin/allusers`).then(res=>{
+            this.setState({ userCollection: res.data });
+
+        }).catch(function(error){
+            console.log(error);
+        });
+    }
+
+    dataTable() {
+        return this.state.userCollection.map((data, i) => {
+            return <DataTable obj={data} key={i} />;
+        });
     }
 
     render() {
@@ -87,6 +100,20 @@ export default class BoardAdmin extends Component {
                     </div>
                 <p>hello</p>
                 <p>{this.state.content}</p>
+                <div className="container">
+                    <table className="table table-striped table-dark">
+                        <thead className="thead-dark">
+                            <tr>
+                                <td>ID</td>
+                                <td>Name</td>
+                                <td>email</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.dataTable()}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         );
     }
