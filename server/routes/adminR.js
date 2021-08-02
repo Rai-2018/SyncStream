@@ -9,8 +9,8 @@ module.exports = function(app) {
         );
         next();
     });
-    app.post('/admin/allusers', controller.getAllUser);
-
+    app.get('/admin/allusers', controller.getAllUser);
+    app.post('/admin/delete', controller.deleteUser);
 }
 
 

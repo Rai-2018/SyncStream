@@ -1,36 +1,20 @@
 import {React,Component} from 'react';
-import {Button,CssBaseline, TextField} from '@material-ui/core';
-import {withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import PropTypes from 'prop-types'
+import {Button, CardHeader, Container, CssBaseline, Paper, Table, TableBody, TableCell, TableHead, TableRow, withStyles,  } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-import AuthService from "../../services/auth-service";
-import {Redirect} from 'react-router';
-import UserService from "../../services/user-service";
-import DataTable from "./data-table";
 import axios from "axios";
 
 const styles = (theme) => ({
+    alert: {
+      spacing: theme.spacing(2),
+    },
     paper: {
       marginTop: theme.spacing(5),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
     },
-    form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    input:{
-      width: '50ch',
-      margin: theme.spacing(3, 0, 2),
-    },
     button: {
       width: '25ch',
-      marginTop: theme.spacing(1),
-    },
-    join: {
-      width: '50ch',
       marginTop: theme.spacing(1),
     },
     container: {
@@ -38,36 +22,20 @@ const styles = (theme) => ({
     }
 });
   
-const required = value => {
-    if(!value) {
-        return (
-            <div className = "alert alert-danger" role = "alert">
-                This field is required!
-            </div>
-        );
-    }
-};
-  
-export default class BoardAdmin extends Component {
+class BoardAdmin extends Component {
     
     constructor(props) {
         super(props);
+        this.deleteUser = this.deleteUser.bind(this);
+
         this.state = { 
-            userCollection: [],
+            userCollection: {users: []},
             content: "", 
             users: null
         };
     }
-    componentDidMount() {
-        // UserService.getAdminBoard().then(
-        //     response => {
-        //         this.setState({ content: response.data });
-        //     },
 
-        //     error => {
-        //         this.setState({ content: (error.response && error.response.data && error.response.data.message) || error.message || error.toString() });
-        //     }
-        // );
+    componentDidMount() {
         axios.get(`http://${process.env.REACT_APP_URL}:4000/admin/allusers`).then(res=>{
             this.setState({ userCollection: res.data });
 
@@ -76,45 +44,78 @@ export default class BoardAdmin extends Component {
         });
     }
 
+    deleteUser(id) {
+        axios.post(`http://${process.env.REACT_APP_URL}:4000/admin/delete`, {id: id})
+        .then( res => {
+            axios.get(`http://${process.env.REACT_APP_URL}:4000/admin/allusers`).then(res=>{
+                this.setState({ userCollection: res.data });
+
+            }).catch(function(error){
+                console.log(error);
+            });
+
+        }).catch(function(error){
+            console.log(error);
+        });
+    }
+
     dataTable() {
-        return this.state.userCollection.map((data, i) => {
-            return <DataTable obj={data} key={i} />;
+        const { classes } = this.props;
+        return this.state.userCollection.users.map((data, i) => {
+
+            return (
+                <TableRow key={data._id}>
+                    <TableCell>
+                        {data._id}
+                    </TableCell>
+                    <TableCell>
+                        {data.username}
+                    </TableCell>
+                    <TableCell>
+                        {data.email}
+                    </TableCell>
+                    <TableCell>
+                        <Button className={classes.button}
+                            onClick={()=>this.deleteUser(data._id)}
+                        >
+                            delete
+                        </Button>
+                    </TableCell>
+                </TableRow>
+            );
         });
     }
 
     render() {
-        const{users}=this.state
-
+        const { classes } = this.props;
         return (
-            <div>
-                <header>
-                    <h2>Admin</h2>
-                    
-                    
-                </header>
-                <p>This page can only be accessed by administrators</p>
-                <br />
-                    <div>
-                        All users from secure (admin only) api end point:
-                        
-                    </div>
-                <p>hello</p>
-                <p>{this.state.content}</p>
-                <div className="container">
-                    <table className="table table-striped table-dark">
-                        <thead className="thead-dark">
-                            <tr>
-                                <td>ID</td>
-                                <td>Name</td>
-                                <td>email</td>
-                            </tr>
-                        </thead>
-                        <tbody>
+            <Container component="main" className={classes.container}>
+                <CssBaseline />
+                <CardHeader
+                    title="Administrator Page"
+                />
+                
+                <Paper elevation={3} className="container">
+                    <Table className="table table-striped table-dark">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Email</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
                             {this.dataTable()}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        </TableBody>
+                    </Table>
+                </Paper>
+                <br />
+                <Alert className={classes.alert} severity="info">
+                    This page can only be accessed by administrators
+                </Alert>
+            </Container>
         );
     }
 }
+
+export default withStyles((theme)=>styles(theme))(BoardAdmin);

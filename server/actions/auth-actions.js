@@ -111,21 +111,22 @@ exports.getAllUser = (req, res) => {
 
     //     res.render('/allusers',userMap);
     // })
-    User.find({}).exec(function(err,users){
+    User.find({}).exec(function(err, users){
         if(err) throw err;
-        res.json(users);
+        //res.json(users);
         return res.status(200).send({ 
-            users: user
+            users: users
         });
     })
 }
 
 exports.deleteUser = (req, res, next) => {
-    User.findByIdAndRemove(req.params.id, (err, data) => {
+    console.log(req.body.id);
+    User.deleteOne({_id: req.body.id}, (err, data) => {
         if(err) {
-            return nex(err);
+            return next(err);
         } else {
-            res.status.json({msg: data})
+            res.status(200).send({message: " deleted user "});
         }
     });
 }

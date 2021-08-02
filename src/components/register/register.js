@@ -1,22 +1,9 @@
 import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import CheckButton from "react-validation/build/button";
-import { ValidatorForm } from "react-material-ui-form-validator";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import AuthService from "../../services/auth-service";
-import { isEmail } from "validator";
-import Avatar from '@material-ui/core/Avatar';
-import { Button, Paper } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { Button, withStyles, CssBaseline, Container, Avatar } from '@material-ui/core';
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
-import { TextValidator, ValidatorComponent } from "react-material-ui-form-validator";
-import { SignalCellularOff } from "@material-ui/icons";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
 
 const styles = (theme) => ({
     paper: {
@@ -26,6 +13,7 @@ const styles = (theme) => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      
     },
     avatar: {
       marginTop: 5,
@@ -38,8 +26,6 @@ const styles = (theme) => ({
     icon: {
         width: "70px",
         height: "70px",
-        // color: "rgba(131,153,167,0.79)"
-
     },
     ValidatorForm: {
       width: '100%', // Fix IE 11 issue.
@@ -57,16 +43,6 @@ const styles = (theme) => ({
         width: '100%',
     }
   });
-
-const required = value => {
-    if(!value) {
-        return (
-            <Alert severity = "warning">
-                This field is required!
-            </Alert>
-        );
-    }
-};
 
 class Register2 extends Component {
     constructor(props) {
@@ -153,7 +129,6 @@ class Register2 extends Component {
             message: "",
             successful: false
         });
-        const {submitted} = this.state.submitted;
 
         AuthService.register(
             this.state.username,
@@ -164,8 +139,6 @@ class Register2 extends Component {
             response => {
                 this.setState({
                     message: response.data.message,
-                    
-                    // message: "Registration Success",
                     successful: true,
                     submitted: true,
                     tester: 0
@@ -232,7 +205,6 @@ class Register2 extends Component {
                                     type="password"
                                     className={classes.inputs}
                                     fullWidth
-                                    // value={this.state.password}
                                     value={this.state.password}
                                     onChange={this.onChangePassword}
                                     validators={['isPasswordRight','required']}
@@ -240,33 +212,27 @@ class Register2 extends Component {
                                 />
                                 <br />
                                 <Button 
-                                    // className="btn btn-primary btn-block"
                                     disableRipple
                                     fullWidth
                                     variant="outlined"
                                     className={classes.button}
                                     type="submit"
-                                    // onClick={this.handleSubmit}
                                 >
                                     Sign Up
                                     
                                 </Button>
                             </div>
                         )}
-                        {/* {this.state.message && (
-                            <div className={this.state.successful?"alert alert-success":"alert alert danger"}>
-                                {this.state.message}
-                            </div>
-                        )} */}
-                        {(this.state.successful && this.state.tester == 0) && (
+                        
+                        
+                        {(this.state.successful && this.state.tester === 0) && (
                             <Alert severity="success">
                                 Successfully Registered
                             </Alert>
                         )}
-                        {(!this.state.successful && this.state.tester == 1) && (
-                            // <Alert severity="error">
-                            //     Failed to Register
-                            // </Alert>
+
+                        {(!this.state.successful && this.state.tester === 1) && (
+
                             <Alert severity="error">
                                 {this.state.message}
                             </Alert>
