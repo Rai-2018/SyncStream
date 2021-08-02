@@ -1,17 +1,42 @@
 import {React,Component} from 'react';
-import {Button,CssBaseline, TextField} from '@material-ui/core';
-import {withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import {Button,CssBaseline, TextField, withStyles, Container, Typography  } from '@material-ui/core';
 import PropTypes from 'prop-types'
 import Alert from '@material-ui/lab/Alert';
-
 
 import AuthService from "../../services/auth-service";
 import {Redirect} from 'react-router';
 
 const styles = (theme) => ({
+  userInfo: {
+    alignItems: "left",
+    marginTop: theme.spacing(3),
+  },
+  infoTitle: {
+    width: '100%',
+    maxWidth:360,
+    display: 'flex',
+    flexDirection: 'column',
+    fontWeight: 'bold',
+    fontFamily:['Monospace','cursive']
+  },
+  infoBody: {
+    width: '80%',
+    display: 'flex',
+    
+    marginLeft: 20,
+    flexDirection: 'column',
+    fontFamily:['Consolas','cursive'],
+    fontSize: 14,
+  },
+  inlineRole: {
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'column',
+    fontFamily:['Consolas','cursive'],
+    fontSize: 14,
+  },
   paper: {
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(3),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -25,7 +50,7 @@ const styles = (theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   button: {
-    width: '25ch',
+    width: '50ch',
     marginTop: theme.spacing(1),
   },
   join: {
@@ -90,7 +115,7 @@ class CreateRoom extends Component {
         var self = this;
 
         this.setState({ generate: true });
-        if(this.state.GenerateText == "" || (this.state.GenerateText.split(/\W+/).length > 1) ){
+        if(this.state.GenerateText === "" || (this.state.GenerateText.split(/\W+/).length > 1) ){
             this.setState({err:'Room name invalid'})
             return;
         }
@@ -109,7 +134,7 @@ class CreateRoom extends Component {
         })
           .then(response => response.json())
           .then(function(data){
-            if(data.message == "duplicate"){
+            if(data.message === "duplicate"){
                 self.setState({err:'Room with same name already exist, try another room name!'})
             } else {
                 self.setState({ roomid: data.message  });
@@ -146,7 +171,7 @@ class CreateRoom extends Component {
         })
           .then(response => response.json())
           .then(function(data){
-            if(data.message == "nonexist"){
+            if(data.message === "nonexist"){
                 self.setState({err:'Room does not exist'})
             } else {
                 self.setState({ roomid: data.message  });
@@ -172,14 +197,36 @@ class CreateRoom extends Component {
         return (
 
             <Container component="main" maxWidth="xs" className={classes.container}>
+              
                 <CssBaseline />
+                <Typography className={classes.userInfo} >                
+                  <Typography component={'span'} className={classes.infoTitle} >
+                    Welcome, {currentUser.username}
+                  </Typography>
+                  <Typography component={'span'} className={classes.infoTitle} >
+                    Email: 
+                  </Typography>
+                  <Typography component={'span'} className={classes.infoBody}>
+                    {currentUser.email}
+                  </Typography>
+                  <Typography component={'span'} className={classes.infoTitle} >
+                    Authorities:
+                  </Typography>
+                  <Typography component={'span'} className={classes.infoBody}>
+                    {currentUser.roles && currentUser.roles.map((role, index) => 
+                      <Typography component={'span'} className={classes.inlineRole} key={index}>
+                        {role}
+                      </Typography>
+                    )}
+                  </Typography>
+                </Typography>
                 <div className={classes.paper}>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="username"
+                        id="RoomName1"
                         label="Room Name"
                         name="Room Name"
                         autoComplete="Room Name"
@@ -189,8 +236,10 @@ class CreateRoom extends Component {
                         onChange={this.handleGenerateTextChange} 
                         value={this.state.GenerateText}
                     />
+                    
                     <div>
-                        <Button
+                        <Button 
+                          display="inline"
                           type="submit"
                           fullWidth
                           variant="contained"
@@ -200,8 +249,8 @@ class CreateRoom extends Component {
                         >
                           Create
                         </Button>
-                        &nbsp;
-                        <Button
+                        <Button                          
+                          display="inline"                        
                           type="submit"
                           fullWidth
                           variant="contained"
@@ -213,14 +262,12 @@ class CreateRoom extends Component {
                         </Button>
                     </div>
                     &nbsp;
-
-
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="username"
+                        id="RoomName2"
                         label="Room Name"
                         name="Room Name"
                         autoComplete="Room Name"

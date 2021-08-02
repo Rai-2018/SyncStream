@@ -1,16 +1,13 @@
 import React from 'react';
 import { Switch, Route, Link, BrowserRouter as Router} from 'react-router-dom';
 
-
 import AuthService from './services/auth-service';
 
 import Register from './components/register/register';
-import Profile from './components/register/profile';
 import BoardUser from './components/register/board-user';
 import BoardModerator from './components/register/board-moderator';
 import BoardAdmin from './components/register/board-admin';
 import SignIn from './components/register/login';
-
 import {Player as VideoPlayer} from './components/video/video';
 
 import Upload from './components/upload/upload';
@@ -71,9 +68,15 @@ class App extends React.Component {
             )}
 
             {showAdminBoard && (
-              <IconButton color="inherit">
-                  <Link to={"/admin"} className="nav-link">Admin Board</Link>
-              </IconButton>
+              <React.Fragment>
+                <Button color="inherit" variant="contained">
+                    <Link to={"/admin"} className="nav-link">Admin Board</Link>
+                </Button>
+                &nbsp;
+                &nbsp;
+              </React.Fragment>
+              
+            
             )}
 
 
@@ -82,25 +85,10 @@ class App extends React.Component {
               <React.Fragment>
 
                 <Button color="inherit" variant="contained">
-                  <Link to={"/main"} >
-                    Main
-                  </Link>
-                </Button>
-
-                &nbsp;
-                &nbsp;
-                
-                <Button color="inherit" variant="contained">
-                  <Link to={"/profile"} className="nav-link">{ currentUser.username }</Link>
-                </Button>
-
-                &nbsp;
-                &nbsp;
-                <Button color="inherit" variant="contained">
                   <a href="/login" className="nav-link" onClick={this.logOut}>Log Out</a>
                 </Button>
                 
-                  &nbsp;
+                &nbsp;
                 &nbsp;
                 <Button color="inherit" variant="contained">
                   <a href="/create" className="nav-link">Create</a>
@@ -130,8 +118,7 @@ class App extends React.Component {
             <Route exact path={["/", "/home"]} component={SignIn} />
             <Route exact path={"/login"} component={SignIn} />
             <Route exact path={"/register"} component={Register} />
-            <Route exact path={"/profile"} component={Profile} />
-            <Route exact path={"/create"} component={CreateRoom} />} />
+            <Route exact path={"/create"} component={CreateRoom} />
             <Route exact path={"/user"} component={BoardUser} />
             <Route exact path={"/mod"} component={BoardModerator} />
             <Route exact path={"/admin"} component={BoardAdmin} />
