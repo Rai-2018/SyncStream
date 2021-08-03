@@ -10,9 +10,6 @@ import ForumIcon from '@material-ui/icons/Forum';
 const Message = ({ msg }) => {
   return (
       <div className="msg">
-        {/* <span className="username">Lexi</span>
-        <span className="content">contentdddlksjflksfjlksdjflksjflksjfldddddddddddddd</span>
-        <span className="time">timeeeeeeeeee</span> */}
         <span className="username"> { msg.userName } </span>
         <span className="content"> { msg.content } </span>
         <span className="time"> { new Date(msg.date).toUTCString() } </span> 
@@ -50,9 +47,6 @@ const MessageBox = (props) => {
         value={ value } 
         onChange={ e => setValue(e.target.value) }
         />
-          {/* <input type="text" className="input" placeholder="message"
-                 value={ value } onChange={ e => setValue(e.target.value) }
-          /> */}
       </form>
       </div>
   );
