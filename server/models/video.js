@@ -6,7 +6,8 @@ const Video = mongoose.model(
     new mongoose.Schema({
         video_name: {type: String, unique: true},
         video_path: String,
-        room_id: Number
+        room_id: Number,
+        video_showname: String
     })
 );
 

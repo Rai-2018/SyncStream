@@ -6,6 +6,8 @@ const storage = multer.diskStorage({
         cb(null, __dirname + '/uploadVideos');
     },
     filename: (req, file, cb) => {
+        // console.log(req);
+        // console.log("orgFileName is " + file.originalname.replace(/ /g, '_'));
         cb(null, file.originalname.replace(/ /g, '_'));
     }
 });
