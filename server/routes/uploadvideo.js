@@ -1,4 +1,4 @@
-const express = require('express');
+const controller = require("../actions/upload-actions");
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -6,6 +6,8 @@ const storage = multer.diskStorage({
         cb(null, __dirname + '/uploadVideos');
     },
     filename: (req, file, cb) => {
+        // console.log(req);
+        // console.log("orgFileName is " + file.originalname.replace(/ /g, '_'));
         cb(null, file.originalname.replace(/ /g, '_'));
     }
 });
@@ -13,15 +15,16 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 1024 * 1024 * 1024 // 1G
+        fileSize: 1024 * 1024 * 1024 // video size <= 1G
     }
 });
 
 module.exports = function(app) {
-    app.post('/api/video', upload.single('file'), (req, res, next) => {
-        console.log("success");
-        res.status(200).json({
-            message: 'Upload Success'
-        });
-    });
+    app.post('/api/upload', 
+        upload.single('file'),
+        controller.upload
+    );
 }
+
+
+

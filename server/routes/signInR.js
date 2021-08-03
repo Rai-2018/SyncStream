@@ -13,7 +13,6 @@ module.exports = function(app) {
     app.post(
         "/api/auth/register",
         [checkRegistration.checkDuplicates, checkRegistration.checkRoles],
-        //function(){ console.log("testing__2"); controller.register; }
         controller.register
     );
     app.post("/api/auth/signin", controller.signin);

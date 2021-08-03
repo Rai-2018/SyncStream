@@ -75,10 +75,8 @@ class BoardAdmin extends Component {
                         {data.email}
                     </TableCell>
                     <TableCell>
-                        <Button className={classes.button}
-                            onClick={()=>this.deleteUser(data._id)}
-                        >
-                            delete
+                        <Button className={classes.button} onClick={()=>this.deleteUser(data._id)}>
+                            Delete
                         </Button>
                     </TableCell>
                 </TableRow>
