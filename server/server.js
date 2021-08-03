@@ -4,11 +4,13 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./models");
-const Msg = require('./models/chat');
+const Message = require("./models/message.js");
+
 
 var httpserver = require('http');
 var socketIO = require('socket.io')
 var url = require('url');
+const { SocketAddress } = require('net');
 var lastplay = 0;
 var lastpause = 0;
 var lastskip = 0;
@@ -90,10 +92,14 @@ io.on('connection', function(socket) {
     const room_id = url.parse(requrl, true).query.roomid;
     socket.join(room_id);
 
-    socket.on('newmessage',msg => {
-      console.log('Message received: ', msg)
-      io.emit('newmessage',msg)
+    socket.on("newmessage",  async(msg) => {
+        const obj = JSON.parse(msg)
+        let message = await Message.Schema.statics.create(obj);
+        io.in(room_id).emit('newmessage',message);
+        //io.emit("newmessage", message);
     });
+
+
 
     socket.on('message', function(message) {
         const obj = JSON.parse(message)
@@ -116,8 +122,6 @@ io.on('connection', function(socket) {
           }
         } else if (action === "request"){
           var user_id = mod[room_id];
-          console.log(user_id)
-          // console.log(master)
           var socketid = master[user_id].id
           socket.broadcast.to(socketid).emit('message',"new");
         } else if (action === "play") {

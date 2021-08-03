@@ -6,7 +6,6 @@ const db = {};
 db.mongoose = mongoose;
 db.user = require("./user");
 db.role = require("./role");
-db.comments = require("./chat");
 db.Room = require('./room');
 db.video = require('./video');
 
