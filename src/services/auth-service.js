@@ -21,11 +21,9 @@ class AuthService {
     }
 
     register(username, email, password) {
-        console.log("registering again");
         return axios.post(API_URL + 'register', {
             username, email, password
-        });      
-
+        }); 
     }
 
     getCurrentUser(){

@@ -97,3 +97,24 @@ exports.signin = (req, res) => {
         });
     });
 };
+
+exports.getAllUser = (req, res) => {
+    User.find({}).exec(function(err, users){
+        if(err) throw err;
+        //res.json(users);
+        return res.status(200).send({ 
+            users: users
+        });
+    })
+}
+
+exports.deleteUser = (req, res, next) => {
+    console.log(req.body.id);
+    User.deleteOne({_id: req.body.id}, (err, data) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.status(200).send({message: " deleted user "});
+        }
+    });
+}

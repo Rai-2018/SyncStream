@@ -32,6 +32,7 @@ class Main extends Component {
             currentUser: {username: ""},
             room_id: 0,
             roomReady: false,
+        useNewUrlParser: true, 
             shared_var: `http://${process.env.REACT_APP_URL}:4000/video/default.mp4`,
             changed: 0
       };
@@ -69,7 +70,8 @@ class Main extends Component {
                                         shared_var={this.state.shared_var} changed={this.state.changed}/> 
                         
 
-                            <Upload updateShared={this.updateShared} shared_var={this.state.shared_var}/>
+                            <Upload updateShared={this.updateShared} shared_var={this.state.shared_var}
+                                room_id={this.state.room_id} user_id={this.state.currentUser.username}/>
                         </Paper>
                         </Grid>
                         <Grid item xs={4}>
@@ -84,7 +86,7 @@ class Main extends Component {
                     null}
 
             </div>      
-        )
+        );
     }
 }
 
