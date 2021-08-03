@@ -55,7 +55,7 @@ input[type=submit] {
 
 @keyframes grow {
   50% { transform: scale(1.4) rotate(-3deg); }
-}
+} 
 
 /* COMPONENT STYLES -------------------- */
 
@@ -199,4 +199,4 @@ input[type=submit] {
   font-weight: 600;
   text-transform: capitalize;
   text-align: center;
-}
+} 
