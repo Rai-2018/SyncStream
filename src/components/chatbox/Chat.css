@@ -1,41 +1,105 @@
 
-  #msgBox {
+  *{
+    margin: 0;
+  }
+  
+  .chatapp{
+    display: grid;
+    place-items: center;
+    height: 60vh;
+    background-color: darksalmon;
+    border-radius: 20px;
+  }
+
+  .chatbody{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(252, 249, 249);
+    height: 55vh;
     width: 25vw;
+    border-radius: 20px;
+    box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.75);
+  }
+
+  .chatheader{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    font-size: smaller;
+    font-style: italic;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    border-bottom: 2px solid darksalmon;
+  }
+  .chat_header{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid darksalmon;
+    font-size: small;
+    font-weight: lighter;
+  }
+  /* .chatheader span{
+    vertical-align: middle;
+  } */
+
+  .chatfooter{
+    margin-top: 2px;
+
+  }
+ 
+  .TextField-without-border-radius fieldset {
+    border-radius: 20px;
+  }
+
+  #msgBox {
     height: 700px;
     border-radius: 5px;
-    background-color: #222;
+    background-color: rgb(255, 255, 255);
     color: #fff;
     padding: 10px;
     overflow: auto;
   }
-  
+
+ 
   #msgBox div {
     width: 100%;
-    background-color: #333;
+    background-color: #f7d5cb;
     box-sizing: border-box;
-    padding: 5px;
-    padding-bottom: 20px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #aaa;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+    border-radius: 20px;
   }
   
   #msgBox div span {
     display: block;
     width: 100%;
     word-break: break-all;
+    overflow:hidden;
   }
-  
-  .footer{
-    margin-top: 10px;
-    width: 26vw;
+
+  .username{
+    font-size: small;
+    color: rgb(97, 78, 204);    
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
   }
-  
-  .footer > input{
-    border-radius: 5px;
-      background-color: #222;
-      box-sizing: border-box;
-      width: 100%;
-      color: #fff;
-      padding: 10px;
-      padding-bottom: 30px;
+
+  .content{
+    margin-top: 5px;
+    font-size: medium;
+    font-weight:500;
+    color: rgb(73, 72, 72);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+
+  .time{
+    font-size: x-small;
+    color: rgb(121, 120, 120);
+    text-align: right;
+    margin-top: 5px;
   }
