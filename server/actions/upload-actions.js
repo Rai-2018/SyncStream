@@ -6,12 +6,12 @@ exports.upload = (req, res) => {
     var video_name = req.file.filename;
     // console.log(video_name);
     var video_showname = video_name.substring(video_name.indexOf('_') + 1);
-    var video_path = `http://localhost:4000` + '/video/' + video_name;
+    // var video_path = `http://{serverIP}:4000` + '/video/' + video_name;
     // console.log(room_id);
     // console.log(typeof(room_id));
     const video = new Video({
         video_name: video_name,
-        video_path: video_path,
+        // video_path: video_path,
         room_id: room_id,
         video_showname: video_showname
     });

@@ -85,7 +85,7 @@ class Video extends React.Component {
                     </span>
                     {is_roommaster ? 
                         <div className="counter">
-                            <button className="counter-action play" onClick={() => this.props.updateShared(video.video_path)}> Play </button>
+                            <button className="counter-action play" onClick={() => this.props.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/` + video.video_name)}> Play </button>
                             <button className="counter-action delete" onClick={() => this.removeVideoHandler(video.video_name)}> Delete </button>    
                         </div>
                         : <div></div>
@@ -146,6 +146,7 @@ class UploadVideo extends React.Component {
         }  
         data.append('room_id', this.props.room_id);
         var self = this;
+        console.log(`front side http://${process.env.REACT_APP_URL}:4000/api/upload`);
         axios.post(`http://${process.env.REACT_APP_URL}:4000/api/upload`, data, {
                 onUploadProgress: ProgressEvent => {
                 this.setState({
