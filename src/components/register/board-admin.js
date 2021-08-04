@@ -7,14 +7,15 @@ const styles = (theme) => ({
     alert: {
       spacing: theme.spacing(2),
     },
+    
     paper: {
       marginTop: theme.spacing(5),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      spacing: theme.spacing(2)
     },
     button: {
-      width: '25ch',
       marginTop: theme.spacing(1),
     },
     container: {

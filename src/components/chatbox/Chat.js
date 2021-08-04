@@ -77,8 +77,8 @@ const Chat = (props) => {
       <div className="chatapp"> 
         <div className="chatbody">
         <div className="chat_header">
-          <ForumIcon />
-        <h3>Chat Room</h3>
+          <ForumIcon style={{color: "#5F5F5F"}}/>
+        <h3 style={{color: "#5F5F5F"}}>Chat Room</h3>
         </div>
           <div id = "msgBox">
               { messages.map((msg, index) => <Message msg={msg} />) }

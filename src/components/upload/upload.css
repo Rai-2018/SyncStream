@@ -61,8 +61,7 @@ input[type=submit] {
 
 .list {
   background: #fff;
-  width: auto;
-  margin: 70px auto;
+  margin: 10px;
   border-radius: 6px;
   border-style: solid;
   border-color: #79a8a9;
@@ -75,10 +74,6 @@ input[type=submit] {
   border-bottom: solid 1px grey;
   letter-spacing: 2px;
 }
-
-  /* .video:last-of-type {
-    border-bottom-color: #79a8a9;
-  } */
 
   .video-name:hover .remove-video {
     visibility: visible;
@@ -149,10 +144,14 @@ input[type=submit] {
   outline-offset: -10px;
   -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
   transition: outline-offset .15s ease-in-out, background-color .15s linear;
-  padding: 120px 0px 85px 35%;
+  padding: 120px 0px 85px;
+  box-sizing: border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing: border-box;
   text-align: center !important;
   margin: 0;
-  width: 65% !important;
+  width: 100% !important;
+  overflow: hidden;
 }
 
 .files input:focus {
@@ -200,3 +199,4 @@ input[type=submit] {
   text-transform: capitalize;
   text-align: center;
 } 
+
