@@ -2,21 +2,14 @@ import {React,Component} from 'react';
 import {Player} from '../video/video';
 import Upload from '../upload/upload';
 import Chatbox from '../chatbox/Chat';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types'
-
 import {withStyles } from '@material-ui/core/styles';
 import AuthService from "../../services/auth-service";
 
 const styles = (theme) => ({
     root: {
       flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      color: theme.palette.text.secondary,
     }
 });
 
@@ -58,33 +51,27 @@ class Main extends Component {
         const {classes} = this.props;
 
         return (
-
             <div className={classes.root}> 
                 {(this.state.userReady && this.state.roomReady) ?
-
-                    <Grid container spacing={3}>
-                        <Grid item xs={8}>
-                        <Paper className={classes.paper}>
-
-                            <Player room_id={this.state.room_id} user_id={this.state.currentUser.username} 
-                                        shared_var={this.state.shared_var} changed={this.state.changed}/> 
-                        
-
-                            <Upload updateShared={this.updateShared} shared_var={this.state.shared_var}
-                                room_id={this.state.room_id} user_id={this.state.currentUser.username}/>
-                        </Paper>
-                        </Grid>
-                        <Grid item xs={4}>
-                        <Paper className={classes.paper}>
-                        <Chatbox room_id={this.state.room_id} user_id={this.state.currentUser.username} /> 
-                        </Paper>
-                        </Grid>
-                    </Grid> 
-
+                <div>
+                    <div style={{ width: '100%' }}>
+                        <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
+                            <Box  width='80%' bgcolor="white">
+                                <Player room_id={this.state.room_id} user_id={this.state.currentUser.username} 
+                                                    shared_var={this.state.shared_var} changed={this.state.changed}/> 
+                            </Box>  
+                            <Box  width='40%' bgcolor="white">
+                                <Chatbox room_id={this.state.room_id} user_id={this.state.currentUser.username} /> 
+                            </Box>  
+                        </Box>
+                    </div>
+                    <div style={{ width: '100%' }}>
+                        <Upload updateShared={this.updateShared} shared_var={this.state.shared_var}
+                                        room_id={this.state.room_id} user_id={this.state.currentUser.username}/>
+                    </div>
+                  </div>
                     :
-
                     null}
-
             </div>      
         );
     }
