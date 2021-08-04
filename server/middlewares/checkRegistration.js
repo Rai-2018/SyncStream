@@ -14,18 +14,16 @@ checkDuplicates = (req, res, next) => {
         if(user) {
             console.log("username in use");
             res.status(400).send({ message: "Username in use already." });
-            
             return;
         }
 
         User.findOne({  // check email
-            username: req.body.email 
+            email: req.body.email 
         }).exec((err, user) => {
             if(err) {
                 res.status(500).send({ message: err });
                 return;
             }
-    
             if(user) {
                 res.status(400).send({ message: " Email is used already." });
                 return;
