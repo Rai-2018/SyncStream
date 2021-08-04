@@ -5,6 +5,7 @@ import { Progress } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { RemoveShoppingCartTwoTone, VideoCallSharp } from '@material-ui/icons';
+import Box from '@material-ui/core/Box';
 
 class Video extends React.Component {
     constructor(props){
@@ -234,25 +235,34 @@ class Upload extends React.Component {
 
     render(){
         return (
-            <div>
-                {/* videos list*/}
-                <Video 
-                    updateShared={this.updateShared}
-                    room_id={this.props.room_id}
-                    user_id={this.props.user_id} 
-                    video_list={this.state.video_list}
-                    listRetrieveHandler={this.listRetrieveHandler}
-                />
-                {/* upload video*/}
-                {/* <button onClick={() => this.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/a.mp4`)}> TEST </button> */}
-                <UploadVideo 
-                    room_id={this.props.room_id}
-                    video_list={this.state.video_list}
-                    listRetrieveHandler={this.listRetrieveHandler}
-                />
+            <div style={{ width: '100%' }}>
+                <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
+                    <Box  width='80%' bgcolor="white">
+                        {/* videos list*/}
+                        <Video 
+                            updateShared={this.updateShared}
+                            room_id={this.props.room_id}
+                            user_id={this.props.user_id} 
+                            video_list={this.state.video_list}
+                            listRetrieveHandler={this.listRetrieveHandler}
+                        />
+                    </Box>
+                    <Box  width='40%' bgcolor="white">
+                        {/* upload video*/}
+                        <UploadVideo 
+                            room_id={this.props.room_id}
+                            video_list={this.state.video_list}
+                            listRetrieveHandler={this.listRetrieveHandler}
+                        />
+                    </Box>  
+                </Box>
             </div>
         );
     }  
 }
 
 export default Upload;
+
+
+                        
+                       
