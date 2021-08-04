@@ -61,8 +61,6 @@ class Room extends Component {
   }
 
 	render(){
-    // const {classes} = this.props;
-    // const {currentUser} = this.state;
 
 		return(
       <div>

@@ -17,8 +17,6 @@ class Player extends React.Component {
 
     componentDidUpdate(prevProps) {
 
-      // Typical usage (don't forget to compare props):
-
       if (this.props.shared_var !== prevProps.shared_var) {
         this.setState({src_url:this.props.shared_var})
       }
