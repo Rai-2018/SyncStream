@@ -4,8 +4,10 @@ import './upload.css';
 import { Progress } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { RemoveShoppingCartTwoTone, VideoCallSharp } from '@material-ui/icons';
-import Box from '@material-ui/core/Box';
+import MovieIcon from '@material-ui/icons/Movie';
+import { List, ListItem, ListItemText, Box, Button, LinearProgress, Divider } from '@material-ui/core';
+import { DropzoneArea } from 'material-ui-dropzone';
+
 
 class Video extends React.Component {
     constructor(props){
@@ -65,6 +67,7 @@ class Video extends React.Component {
                 toast.error(`Delete Fail with status: ${res.data.message}`);
             }
             else {
+                console.log(res.data);
                 toast.success(`Delete Successful for video: ${res.data.message}`);
             }
             // TODO
@@ -80,18 +83,25 @@ class Video extends React.Component {
         const videos = this.state.video_list.map(video => {
             var is_roommaster = this.state.is_roommaster
             return(
-                <div className="video">
-                    <span className="video-name">
-                        {video.video_showname}
-                    </span>
-                    {is_roommaster ? 
-                        <div className="counter">
-                            <button className="counter-action play" onClick={() => this.props.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/` + video.video_name)}> Play </button>
-                            <button className="counter-action delete" onClick={() => this.removeVideoHandler(video.video_name)}> Delete </button>    
-                        </div>
-                        : <div></div>
-                    }
-                </div> 
+                <div>
+                <ListItem borderColor="grey.500" style={{border:1}}>       
+                    <MovieIcon style={{color: "FFB266"}} />
+                    <ListItemText primary= {video.video_showname} />
+                        {is_roommaster ? 
+                            <div spacing={2}>
+                                <Button variant="contained" color="primary" 
+                                onClick={() => 
+                                this.props.updateShared(`http://${process.env.REACT_APP_URL}:4000/video/` + video.video_name)}
+                                >PLAY</Button>
+                                <Button variant="contained" style={{ marginLeft: '0.8rem' }} onClick={() => 
+                                this.removeVideoHandler(video.video_name)}
+                                >DELETE</Button>
+                            </div>
+                            : <div></div>
+                        }             
+                </ListItem>
+                <Divider />  
+                </div>
             );     
         });
        
@@ -102,9 +112,9 @@ class Video extends React.Component {
                     <h1>video list</h1>
                     <span className="stats">videos #: {this.props.video_list.length}</span>
                 </header>
-                <div>
+                <List component="ul" style={{height: 280, overflowY: 'auto'}} >
                     { videos }
-                </div>
+                </List>
             </div>
           </React.Fragment>
         ); 
@@ -125,8 +135,7 @@ class UploadVideo extends React.Component {
         this.props.listRetrieveHandler();
     }
 
-    fileSelectedHandler = event => {
-        const files = event.target.files;
+    fileSelectedHandler = (files) => {
         this.setState({
             selectedVideo: files,
             loaded: 0
@@ -136,18 +145,19 @@ class UploadVideo extends React.Component {
     fileUploadHandler = (event) => {
         const data = new FormData();      
         // console.log(this.props.room_id);
-        var videoFiles = this.state.selectedVideo;
-        if(videoFiles == null){
+        var videoFile = this.state.selectedVideo[0];
+        // console.log(videoFile);
+        if(videoFile == null){
             toast.error("Please choose the video!");
             return;
         } else {
-            var newFileName = this.props.room_id + '_' + videoFiles[0].name;
+            var newFileName = this.props.room_id + '_' + videoFile.name;
             // console.log(videoFiles[0].name);
-            data.append('file', videoFiles[0], newFileName);
+            data.append('file', videoFile, newFileName);
         }  
         data.append('room_id', this.props.room_id);
         var self = this;
-        console.log(`front side http://${process.env.REACT_APP_URL}:4000/api/upload`);
+        // console.log(`front side http://${process.env.REACT_APP_URL}:4000/api/upload`);
         axios.post(`http://${process.env.REACT_APP_URL}:4000/api/upload`, data, {
                 onUploadProgress: ProgressEvent => {
                 this.setState({
@@ -178,26 +188,45 @@ class UploadVideo extends React.Component {
               <div className="form-group">
                 <ToastContainer />
               </div>
-              <h4>Upload Your Video</h4>
-              <hr className="my-4" />  
+              <h4 style={{color: "#5F5F5F"}}>Upload Your MP4 Video</h4>
+              <DropzoneArea
+                acceptedFiles={['video/*']}
+                onChange={this.fileSelectedHandler.bind(this)}
+                showFileNames
+                dropzoneText="Drop Video Here or Browse"
+                showAlerts={false}
+                maxFileSize={1073741824}
+                filesLimit={1}
+               />
+               <LinearProgress variant="determinate" value={this.state.loaded} />
+               <Progress max="100" color="success" value={this.state.loaded} className="mt-4 mb-1">
+                    {isNaN(Math.round(this.state.loaded, 2)) ? 0 : Math.round(this.state.loaded, 2)}%
+               </Progress>
+               <button 
+                    type="button"
+                    className="btn btn-success btn-block"
+                    onClick={this.fileUploadHandler.bind(this)}>Upload Video
+                </button> 
+
+              {/* <hr className="my-4" />  
               <form method="post" name="videoUpload" action="/api/upload" id="#" encType="multipart/form-data">
                 <div className="form-group files">
                   <input
                     type="file"
                     name="file"
                     className="form-control"
-                    accept="video/*"
+                    accept="video/mp4"
                     onChange={this.fileSelectedHandler.bind(this)} />
                   <Progress max="100" color="success" value={this.state.loaded} className="mt-4 mb-1">
                     {isNaN(Math.round(this.state.loaded, 2)) ? 0 : Math.round(this.state.loaded, 2)}%
                   </Progress>
-                  <button
-                    type="button"
-                    className="btn btn-success btn-block"
-                    onClick={this.fileUploadHandler.bind(this)}>Upload Video
-                  </button>
+                    <button
+                        type="button"
+                        className="btn btn-success btn-block"
+                        onClick={this.fileUploadHandler.bind(this)}>Upload Video
+                    </button>         
                 </div>
-              </form>
+              </form>  */}
             </div>
           </React.Fragment>
         );
@@ -235,7 +264,7 @@ class Upload extends React.Component {
 
     render(){
         return (
-            <div style={{ width: '100%' }}>
+            <div >
                 <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
                     <Box  width='80%' bgcolor="white">
                         {/* videos list*/}
