@@ -8,7 +8,7 @@ module.exports = function(app) {
             "x-access-token, Origin, Content-Type, Accept"
         );
         next();
-    });
+    }); 
     app.get("/api/test/all", controller.allAccess);
     app.get("/api/test/user", [checkAuth.checkToken], controller.userAccess);
     app.get('/api/test/mod', [checkAuth.checkToken, checkAuth.checkMod], controller.moderatorAccess);
