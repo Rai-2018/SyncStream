@@ -35,7 +35,7 @@ class BoardAdmin extends Component {
             users: null
         };
     }
-
+ 
     componentDidMount() {
         axios.get(`http://${process.env.REACT_APP_URL}:4000/admin/allusers`).then(res=>{
             this.setState({ userCollection: res.data });

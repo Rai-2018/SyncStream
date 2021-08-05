@@ -12,6 +12,8 @@ import Alert from '@material-ui/lab/Alert';
 
 import AuthService from "../../services/auth-service";
 import CheckButton from "react-validation/build/button";
+import {Redirect} from 'react-router';
+
 
 
 const styles = (theme) => ({
@@ -60,6 +62,8 @@ class SignIn extends React.Component {
             password: "",
             loading: false,
             message: "",
+            redirect: null,
+            currentUser: {username: ""},
         };
     }
 
@@ -73,6 +77,14 @@ class SignIn extends React.Component {
         this.setState({
             password: e.target.value
         });
+    }
+    
+    componentDidMount() {
+      const currentUser = AuthService.getCurrentUser();
+      if(currentUser) {
+        this.setState({ redirect: "/create" });
+      }
+      this.setState({currentUser: currentUser });
     }
 
     handleLogin(e) {
@@ -109,6 +121,11 @@ class SignIn extends React.Component {
     }
 
   render(){
+    if(this.state.redirect) {
+      return <Redirect to={{pathname: this.state.redirect
+              }} 
+              />
+    }
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="xs" className={classes.container}>

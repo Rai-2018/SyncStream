@@ -190,7 +190,7 @@ class UploadVideo extends React.Component {
               </div>
               <h4 style={{color: "#5F5F5F"}}>Upload Your MP4 Video</h4>
               <DropzoneArea
-                acceptedFiles={['video/*']}
+                acceptedFiles={['video/mp4']}
                 onChange={this.fileSelectedHandler.bind(this)}
                 showFileNames
                 dropzoneText="Drop Video Here or Browse"
