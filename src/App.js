@@ -115,7 +115,7 @@ class App extends React.Component {
 
         <div className="container mt-3">
         <Switch>
-            <Route exact path={["/", "/home"]} component={SignIn} />
+            <Route exact path={["/", "/home"]} component={CreateRoom} />
             <Route exact path={"/login"} component={SignIn} />
             <Route exact path={"/register"} component={Register} />
             <Route exact path={"/create"} component={CreateRoom} />
